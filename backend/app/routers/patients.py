@@ -11,7 +11,7 @@ from app.services.patient_service import PatientService
 router = APIRouter()
 
 
-@router.get("/", response_model=PaginatedResponse[PatientOut])
+@router.get("", response_model=PaginatedResponse[PatientOut])
 def list_patients(
     params: PaginationParams = Depends(),
     db: Session = Depends(get_db),
@@ -27,7 +27,7 @@ def get_patient(patient_id: UUID, db: Session = Depends(get_db)):
     return patient
 
 
-@router.post("/", response_model=PatientOut, status_code=status.HTTP_201_CREATED)
+@router.post("", response_model=PatientOut, status_code=status.HTTP_201_CREATED)
 def create_patient(data: PatientCreate, db: Session = Depends(get_db)):
     return PatientService(db).create_patient(data)
 
