@@ -7,9 +7,9 @@ interface StatusChartProps {
 }
 
 const COLORS = {
-  active: "#10b981",
-  critical: "#ef4444",
-  inactive: "#f59e0b",
+  active: "#0d9668",    /* teal-green — professional, calm */
+  critical: "#dc2626",  /* warm red — urgency */
+  inactive: "#d97706",  /* warm amber */
 };
 
 export function StatusChart({ active, critical, inactive }: StatusChartProps) {
@@ -46,8 +46,9 @@ export function StatusChart({ active, critical, inactive }: StatusChartProps) {
               formatter={(value: number, name: string) => [`${value} patients`, name]}
               contentStyle={{
                 borderRadius: "8px",
-                border: "1px solid hsl(270 25% 88%)",
+                border: "1px solid hsl(30 8% 86%)",
                 fontSize: "13px",
+                backgroundColor: "#fff",
               }}
             />
           </PieChart>

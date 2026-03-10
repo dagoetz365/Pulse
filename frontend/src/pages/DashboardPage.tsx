@@ -6,6 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { StatusBadge } from "@/components/patients/StatusBadge";
 import { StatusChart } from "@/components/dashboard/StatusChart";
 import { usePatients } from "@/hooks/usePatients";
+import { usePatientStore } from "@/store/patientStore";
 import { formatDate } from "@/lib/utils";
 
 function StatCard({
@@ -14,15 +15,20 @@ function StatCard({
   icon: Icon,
   color,
   isLoading,
+  onClick,
 }: {
   title: string;
   value: number | string;
   icon: React.ElementType;
   color: string;
   isLoading: boolean;
+  onClick?: () => void;
 }) {
   return (
-    <Card className="shadow-sm">
+    <Card
+      className={`shadow-sm transition-all ${onClick ? "cursor-pointer hover:shadow-md hover:-translate-y-0.5" : ""}`}
+      onClick={onClick}
+    >
       <CardContent className="p-5">
         <div className="flex items-start justify-between">
           <div>
@@ -44,6 +50,7 @@ function StatCard({
 
 export function DashboardPage() {
   const navigate = useNavigate();
+  const { setStatus, resetFilters } = usePatientStore();
 
   const { data: allData, isLoading } = usePatients({ page: 1, page_size: 100 });
   const { data: activeData } = usePatients({ page: 1, page_size: 1, status: "active" });
@@ -54,6 +61,15 @@ export function DashboardPage() {
   const activeCount = activeData?.total ?? 0;
   const criticalCount = criticalData?.total ?? 0;
   const inactiveCount = inactiveData?.total ?? 0;
+
+  function navigateToPatients(statusFilter?: string) {
+    if (statusFilter) {
+      setStatus(statusFilter);
+    } else {
+      resetFilters();
+    }
+    navigate("/patients");
+  }
 
   return (
     <div className="p-6 space-y-6">
@@ -71,7 +87,7 @@ export function DashboardPage() {
         </Button>
       </div>
 
-      {/* Stats row */}
+      {/* Stats row — each card is clickable */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
           title="Total Patients"
@@ -79,27 +95,31 @@ export function DashboardPage() {
           icon={Users}
           color="bg-primary/10 text-primary"
           isLoading={isLoading}
+          onClick={() => navigateToPatients()}
         />
         <StatCard
           title="Active"
           value={activeCount}
           icon={UserCheck}
-          color="bg-emerald-100 text-emerald-700"
+          color="bg-emerald-50 text-emerald-600"
           isLoading={isLoading}
+          onClick={() => navigateToPatients("active")}
         />
         <StatCard
           title="Critical"
           value={criticalCount}
           icon={AlertTriangle}
-          color="bg-red-100 text-red-700"
+          color="bg-red-50 text-red-600"
           isLoading={isLoading}
+          onClick={() => navigateToPatients("critical")}
         />
         <StatCard
           title="Inactive"
           value={inactiveCount}
           icon={UserX}
-          color="bg-amber-100 text-amber-700"
+          color="bg-amber-50 text-amber-600"
           isLoading={isLoading}
+          onClick={() => navigateToPatients("inactive")}
         />
       </div>
 
@@ -145,7 +165,7 @@ export function DashboardPage() {
                 variant="ghost"
                 size="sm"
                 className="text-primary"
-                onClick={() => navigate("/patients?status=critical")}
+                onClick={() => navigateToPatients("critical")}
               >
                 View all
               </Button>
@@ -166,7 +186,7 @@ export function DashboardPage() {
                 {criticalData.items.map((patient) => (
                   <div
                     key={patient.id}
-                    className="flex items-center justify-between py-3 cursor-pointer hover:bg-muted/30 -mx-2 px-2 rounded-lg transition-colors"
+                    className="flex items-center justify-between py-3 cursor-pointer hover:bg-muted/50 -mx-2 px-2 rounded-lg transition-colors"
                     onClick={() => navigate(`/patients/${patient.id}`)}
                   >
                     <div className="flex items-center gap-3">
@@ -200,7 +220,7 @@ export function DashboardPage() {
               variant="ghost"
               size="sm"
               className="text-primary"
-              onClick={() => navigate("/patients")}
+              onClick={() => navigateToPatients()}
             >
               View all
             </Button>
@@ -225,7 +245,7 @@ export function DashboardPage() {
               {(allData?.items ?? []).slice(0, 8).map((patient) => (
                 <div
                   key={patient.id}
-                  className="flex items-center gap-3 py-3 cursor-pointer hover:bg-muted/30 -mx-2 px-2 rounded-lg transition-colors"
+                  className="flex items-center gap-3 py-3 cursor-pointer hover:bg-muted/50 -mx-2 px-2 rounded-lg transition-colors"
                   onClick={() => navigate(`/patients/${patient.id}`)}
                 >
                   <div className="flex items-center justify-center w-9 h-9 rounded-full bg-primary/10 text-primary text-xs font-semibold shrink-0">
