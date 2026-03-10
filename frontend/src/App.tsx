@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AppShell } from "@/components/layout/AppShell";
+import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import { Toaster } from "@/components/ui/toast";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -20,6 +21,9 @@ const PatientCreatePage = lazy(() =>
 );
 const PatientEditPage = lazy(() =>
   import("@/pages/PatientEditPage").then((m) => ({ default: m.PatientEditPage }))
+);
+const SettingsPage = lazy(() =>
+  import("@/pages/SettingsPage").then((m) => ({ default: m.SettingsPage }))
 );
 const NotFoundPage = lazy(() =>
   import("@/pages/NotFoundPage").then((m) => ({ default: m.NotFoundPage }))
@@ -53,6 +57,7 @@ const queryClient = new QueryClient({
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
+      <ErrorBoundary>
       <BrowserRouter>
         <Routes>
           <Route element={<AppShell />}>
@@ -97,6 +102,14 @@ export default function App() {
               }
             />
             <Route
+              path="/settings"
+              element={
+                <Suspense fallback={<PageLoader />}>
+                  <SettingsPage />
+                </Suspense>
+              }
+            />
+            <Route
               path="*"
               element={
                 <Suspense fallback={<PageLoader />}>
@@ -107,6 +120,7 @@ export default function App() {
           </Route>
         </Routes>
       </BrowserRouter>
+      </ErrorBoundary>
       <Toaster />
     </QueryClientProvider>
   );

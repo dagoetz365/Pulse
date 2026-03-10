@@ -5,7 +5,7 @@
 @layer base {
   :root {
     /* Ascertain brand — warm neutral + brand blue + lavender accent */
-    --background: 36 27% 96%;           /* #F6F4F1 warm off-white */
+    --background: 36 20% 91%;           /* ~#E9E6E0 warm darker off-white */
     --foreground: 0 0% 7%;              /* #121212 true black */
 
     --card: 0 0% 100%;                  /* white cards */
@@ -20,7 +20,7 @@
     --secondary: 260 100% 88%;          /* #D4C1FF lavender */
     --secondary-foreground: 228 100% 28%;
 
-    --muted: 36 12% 93%;               /* warm muted bg */
+    --muted: 36 12% 88%;               /* warm muted bg */
     --muted-foreground: 30 5% 37%;      /* #5E5A56 warm gray */
 
     --accent: 260 80% 94%;             /* lighter lavender tint */

@@ -70,6 +70,17 @@ export function PatientDetailPage() {
               variant="outline"
               size="sm"
               className="gap-2"
+              asChild
+            >
+              <a href={`mailto:${patient.email}`} aria-label={`Email ${patient.full_name}`}>
+                <Mail className="h-3.5 w-3.5" />
+                Email
+              </a>
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-2"
               onClick={() => navigate(`/patients/${patient.id}/edit`)}
             >
               <Pencil className="h-3.5 w-3.5" />
