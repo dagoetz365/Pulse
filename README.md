@@ -67,6 +67,17 @@ docker compose exec backend pytest -v
 
 **Notes (12 tests):** Add note · custom timestamp · empty content (400) · missing patient (404) · list notes · empty list · missing patient (404) · descending order · delete (204) · missing note (404) · wrong patient ID (404)
 
+## Key Decisions
+
+| Decision | Reasoning |
+|----------|-----------|
+| TanStack Query + Zustand | Server state in Query (cache/dedup); client state in Zustand — clear separation, no overlap |
+| Zod mirrors Pydantic | Same validation both sides; server is authority |
+| Gemini → template fallback | Always works, even without an API key |
+| `services/` vs `routers/` | Thin routes, testable business logic |
+| `SORTABLE_FIELDS` whitelist | Prevents SQL injection via sort parameter |
+| Vite proxy (`/api` → backend) | Backend URL never in client bundle; secrets never prefixed with `VITE_` |
+
 ## Stretch Goals
 
 Two chosen per the assessment instructions:
