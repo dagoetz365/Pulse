@@ -4,38 +4,38 @@
 
 @layer base {
   :root {
-    /* Ascertain brand — soft lavender palette */
-    --background: 270 40% 96%;        /* #F0EBF8 */
-    --foreground: 240 5% 12%;         /* #1C1C1E */
+    /* Ascertain brand — warm neutral + brand blue + lavender accent */
+    --background: 36 27% 96%;           /* #F6F4F1 warm off-white */
+    --foreground: 0 0% 7%;              /* #121212 true black */
 
-    --card: 0 0% 100%;                /* white cards */
-    --card-foreground: 240 5% 12%;
+    --card: 0 0% 100%;                  /* white cards */
+    --card-foreground: 0 0% 7%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 240 5% 12%;
+    --popover-foreground: 0 0% 7%;
 
-    --primary: 270 42% 55%;           /* #7C5CBF purple */
+    --primary: 228 100% 36%;            /* #002BBA Ascertain brand blue */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 270 35% 95%;         /* lavender tint */
-    --secondary-foreground: 270 42% 35%;
+    --secondary: 260 100% 88%;          /* #D4C1FF lavender */
+    --secondary-foreground: 228 100% 28%;
 
-    --muted: 270 20% 96%;
-    --muted-foreground: 240 5% 45%;   /* #6B6B80 */
+    --muted: 36 12% 93%;               /* warm muted bg */
+    --muted-foreground: 30 5% 37%;      /* #5E5A56 warm gray */
 
-    --accent: 270 35% 95%;
-    --accent-foreground: 270 42% 35%;
+    --accent: 260 80% 94%;             /* lighter lavender tint */
+    --accent-foreground: 228 100% 28%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 270 25% 88%;            /* #E4DDF0 */
-    --input: 270 25% 88%;
-    --ring: 270 42% 55%;
+    --border: 30 8% 86%;               /* warm border */
+    --input: 30 8% 86%;
+    --ring: 228 100% 36%;
 
     --radius: 0.75rem;
 
-    --sidebar-active: 270 40% 94%;     /* soft lavender highlight */
+    --sidebar-active: 260 60% 96%;      /* very light lavender highlight */
   }
 }
 
@@ -46,12 +46,15 @@
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 
   h1,
   h2,
   h3 {
-    @apply font-display;
+    @apply font-display tracking-tight;
   }
 }
 
