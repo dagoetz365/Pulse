@@ -5,7 +5,7 @@ services:
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
-      POSTGRES_DB: ${POSTGRES_DB:-cura}
+      POSTGRES_DB: ${POSTGRES_DB:-pulse}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -24,7 +24,7 @@ services:
     env_file:
       - .env
     environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-cura}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-pulse}
     volumes:
       - ./backend:/app          # hot reload: local source mounted over container
       - /app/__pycache__        # anonymous volume prevents cache pollution

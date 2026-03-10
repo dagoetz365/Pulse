@@ -38,7 +38,7 @@ export function Sidebar() {
               <Activity className="w-4 h-4 text-white" />
             </div>
             <span className="font-display text-lg font-semibold text-white tracking-tight">
-              Cura
+              Pulse Healthcare
             </span>
           </div>
           <button
@@ -79,7 +79,7 @@ export function Sidebar() {
 
         {/* Footer */}
         <div className="p-4 border-t border-white/10">
-          <p className="text-xs text-white/40">Cura · Healthcare Platform</p>
+          <p className="text-xs text-white/40">Pulse Healthcare</p>
         </div>
       </aside>
     </>
