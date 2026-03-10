@@ -2,14 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import "@fontsource/inter/400.css";
-@import "@fontsource/inter/500.css";
-@import "@fontsource/inter/600.css";
-@import "@fontsource/inter/700.css";
-@import "@fontsource/playfair-display/400.css";
-@import "@fontsource/playfair-display/600.css";
-@import "@fontsource/playfair-display/700.css";
-
 @layer base {
   :root {
     /* Ascertain brand — soft lavender palette */
@@ -42,6 +34,8 @@
     --ring: 270 42% 55%;
 
     --radius: 0.75rem;
+
+    --sidebar-active: 270 40% 94%;     /* soft lavender highlight */
   }
 }
 

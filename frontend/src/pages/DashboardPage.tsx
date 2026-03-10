@@ -1,9 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import { Users, UserCheck, AlertTriangle, UserX, TrendingUp, Plus } from "lucide-react";
+import { Users, UserCheck, AlertTriangle, UserX, Plus, Activity } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { StatusBadge } from "@/components/patients/StatusBadge";
+import { StatusChart } from "@/components/dashboard/StatusChart";
 import { usePatients } from "@/hooks/usePatients";
 import { formatDate } from "@/lib/utils";
 
@@ -21,7 +22,7 @@ function StatCard({
   isLoading: boolean;
 }) {
   return (
-    <Card>
+    <Card className="shadow-sm">
       <CardContent className="p-5">
         <div className="flex items-start justify-between">
           <div>
@@ -55,7 +56,7 @@ export function DashboardPage() {
   const inactiveCount = inactiveData?.total ?? 0;
 
   return (
-    <div className="p-6 space-y-8">
+    <div className="p-6 space-y-6">
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
@@ -70,7 +71,7 @@ export function DashboardPage() {
         </Button>
       </div>
 
-      {/* Stats */}
+      {/* Stats row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
           title="Total Patients"
@@ -102,64 +103,97 @@ export function DashboardPage() {
         />
       </div>
 
-      {/* Critical patients */}
-      <Card>
-        <CardHeader className="pb-3">
-          <div className="flex items-center justify-between">
+      {/* Middle row: chart + critical patients side by side */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* Status distribution chart */}
+        <Card className="shadow-sm">
+          <CardHeader className="pb-2">
             <CardTitle className="text-base font-semibold flex items-center gap-2">
-              <AlertTriangle className="h-4 w-4 text-red-500" />
-              Critical Patients
+              <Activity className="h-4 w-4 text-primary" />
+              Patient Status Distribution
             </CardTitle>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-primary"
-              onClick={() => navigate("/patients?status=critical")}
-            >
-              View all
-            </Button>
-          </div>
-        </CardHeader>
-        <CardContent>
-          {isLoading ? (
-            <div className="space-y-3">
-              {Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} className="flex items-center justify-between py-2">
-                  <Skeleton className="h-4 w-40" />
-                  <Skeleton className="h-5 w-16 rounded-full" />
+          </CardHeader>
+          <CardContent>
+            {isLoading ? (
+              <div className="flex items-center gap-6">
+                <Skeleton className="w-[140px] h-[140px] rounded-full" />
+                <div className="space-y-3 flex-1">
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-3/4" />
+                  <Skeleton className="h-4 w-2/3" />
                 </div>
-              ))}
-            </div>
-          ) : criticalData?.items && criticalData.items.length > 0 ? (
-            <div className="divide-y divide-border">
-              {criticalData.items.map((patient) => (
-                <div
-                  key={patient.id}
-                  className="flex items-center justify-between py-3 cursor-pointer hover:bg-muted/30 -mx-2 px-2 rounded-lg transition-colors"
-                  onClick={() => navigate(`/patients/${patient.id}`)}
-                >
-                  <div>
-                    <p className="text-sm font-medium text-foreground">{patient.full_name}</p>
-                    <p className="text-xs text-muted-foreground mt-0.5">
-                      {patient.last_visit ? `Last visit: ${formatDate(patient.last_visit)}` : "No visits recorded"}
-                    </p>
-                  </div>
-                  <StatusBadge status={patient.status} />
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground py-4">
-              <TrendingUp className="h-4 w-4 text-emerald-500" />
-              No critical patients — all clear!
-            </div>
-          )}
-        </CardContent>
-      </Card>
+              </div>
+            ) : (
+              <StatusChart
+                active={activeCount}
+                critical={criticalCount}
+                inactive={inactiveCount}
+              />
+            )}
+          </CardContent>
+        </Card>
 
-      {/* Recent patients */}
-      <Card>
-        <CardHeader className="pb-3">
+        {/* Critical patients */}
+        <Card className="shadow-sm">
+          <CardHeader className="pb-2">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-base font-semibold flex items-center gap-2">
+                <AlertTriangle className="h-4 w-4 text-red-500" />
+                Critical Patients
+              </CardTitle>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-primary"
+                onClick={() => navigate("/patients?status=critical")}
+              >
+                View all
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent>
+            {isLoading ? (
+              <div className="space-y-3">
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <div key={i} className="flex items-center justify-between py-2">
+                    <Skeleton className="h-4 w-40" />
+                    <Skeleton className="h-5 w-16 rounded-full" />
+                  </div>
+                ))}
+              </div>
+            ) : criticalData?.items && criticalData.items.length > 0 ? (
+              <div className="divide-y divide-border">
+                {criticalData.items.map((patient) => (
+                  <div
+                    key={patient.id}
+                    className="flex items-center justify-between py-3 cursor-pointer hover:bg-muted/30 -mx-2 px-2 rounded-lg transition-colors"
+                    onClick={() => navigate(`/patients/${patient.id}`)}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center justify-center w-8 h-8 rounded-full bg-red-50 text-red-600 text-xs font-semibold shrink-0">
+                        {patient.first_name[0]}{patient.last_name[0]}
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-foreground">{patient.full_name}</p>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          {patient.conditions?.slice(0, 2).join(", ") || "No conditions"}
+                        </p>
+                      </div>
+                    </div>
+                    <StatusBadge status={patient.status} />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-muted-foreground py-4">No critical patients</p>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Recent patients — full width */}
+      <Card className="shadow-sm">
+        <CardHeader className="pb-2">
           <div className="flex items-center justify-between">
             <CardTitle className="text-base font-semibold">Recent Patients</CardTitle>
             <Button
@@ -177,7 +211,7 @@ export function DashboardPage() {
             <div className="space-y-3">
               {Array.from({ length: 5 }).map((_, i) => (
                 <div key={i} className="flex items-center gap-3 py-2">
-                  <Skeleton className="h-8 w-8 rounded-full" />
+                  <Skeleton className="h-9 w-9 rounded-full" />
                   <div className="flex-1">
                     <Skeleton className="h-4 w-32" />
                     <Skeleton className="h-3 w-24 mt-1" />
@@ -188,18 +222,21 @@ export function DashboardPage() {
             </div>
           ) : (
             <div className="divide-y divide-border">
-              {(allData?.items ?? []).slice(0, 5).map((patient) => (
+              {(allData?.items ?? []).slice(0, 8).map((patient) => (
                 <div
                   key={patient.id}
                   className="flex items-center gap-3 py-3 cursor-pointer hover:bg-muted/30 -mx-2 px-2 rounded-lg transition-colors"
                   onClick={() => navigate(`/patients/${patient.id}`)}
                 >
-                  <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary text-xs font-semibold shrink-0">
+                  <div className="flex items-center justify-center w-9 h-9 rounded-full bg-primary/10 text-primary text-xs font-semibold shrink-0">
                     {patient.first_name[0]}{patient.last_name[0]}
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-foreground truncate">{patient.full_name}</p>
                     <p className="text-xs text-muted-foreground truncate">{patient.email}</p>
+                  </div>
+                  <div className="hidden sm:block text-xs text-muted-foreground">
+                    {patient.last_visit ? formatDate(patient.last_visit) : "—"}
                   </div>
                   <StatusBadge status={patient.status} />
                 </div>
