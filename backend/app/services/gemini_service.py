@@ -1,18 +1,23 @@
 import logging
+from typing import TYPE_CHECKING
 
 import google.generativeai as genai
 
 from app.config import settings
 
+if TYPE_CHECKING:
+    from app.models.note import Note
+    from app.models.patient import Patient
+
 logger = logging.getLogger(__name__)
 
 
 class GeminiService:
-    def __init__(self):
+    def __init__(self) -> None:
         genai.configure(api_key=settings.GEMINI_API_KEY)
         self.model = genai.GenerativeModel("gemini-2.5-flash")
 
-    def generate_summary(self, patient, notes) -> str:
+    def generate_summary(self, patient: "Patient", notes: list["Note"]) -> str:
         if not settings.GEMINI_API_KEY:
             return self._template_summary(patient, notes)
 
@@ -61,7 +66,7 @@ Be factual, professional, and concise. Do not invent information not present in 
             logger.warning(f"Gemini API error: {e}. Falling back to template summary.")
             return self._template_summary(patient, notes)
 
-    def _template_summary(self, patient, notes) -> str:
+    def _template_summary(self, patient: "Patient", notes: list["Note"]) -> str:
         from datetime import date
         age = (
             date.today().year

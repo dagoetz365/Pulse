@@ -97,6 +97,7 @@ function TagInput({
                 type="button"
                 onClick={() => onChange(value.filter((t) => t !== tag))}
                 className="hover:text-primary/70"
+                aria-label={`Remove ${tag}`}
               >
                 <X className="h-3 w-3" />
               </button>
@@ -141,7 +142,7 @@ export function PatientForm({ defaultValues, onSubmit, isSubmitting, submitLabel
                 <FormItem>
                   <FormLabel>First Name</FormLabel>
                   <FormControl>
-                    <div><Input placeholder="Jane" {...field} /></div>
+                    <Input placeholder="Jane" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -154,7 +155,7 @@ export function PatientForm({ defaultValues, onSubmit, isSubmitting, submitLabel
                 <FormItem>
                   <FormLabel>Last Name</FormLabel>
                   <FormControl>
-                    <div><Input placeholder="Smith" {...field} /></div>
+                    <Input placeholder="Smith" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -168,7 +169,7 @@ export function PatientForm({ defaultValues, onSubmit, isSubmitting, submitLabel
               <FormItem>
                 <FormLabel>Date of Birth</FormLabel>
                 <FormControl>
-                  <div><Input type="date" {...field} /></div>
+                  <Input type="date" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -181,7 +182,7 @@ export function PatientForm({ defaultValues, onSubmit, isSubmitting, submitLabel
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <div><Input type="email" placeholder="jane@example.com" {...field} /></div>
+                  <Input type="email" placeholder="jane@example.com" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -194,7 +195,7 @@ export function PatientForm({ defaultValues, onSubmit, isSubmitting, submitLabel
               <FormItem>
                 <FormLabel>Phone</FormLabel>
                 <FormControl>
-                  <div><Input placeholder="+1 (555) 000-0000" {...field} value={field.value ?? ""} /></div>
+                  <Input placeholder="+1 (555) 000-0000" {...field} value={field.value ?? ""} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -207,7 +208,7 @@ export function PatientForm({ defaultValues, onSubmit, isSubmitting, submitLabel
               <FormItem>
                 <FormLabel>Address</FormLabel>
                 <FormControl>
-                  <div><Textarea placeholder="123 Main St, City, State, ZIP" {...field} value={field.value ?? ""} /></div>
+                  <Textarea placeholder="123 Main St, City, State, ZIP" {...field} value={field.value ?? ""} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -279,13 +280,11 @@ export function PatientForm({ defaultValues, onSubmit, isSubmitting, submitLabel
               <FormItem>
                 <FormLabel>Allergies</FormLabel>
                 <FormControl>
-                  <div>
-                    <TagInput
-                      value={field.value}
-                      onChange={field.onChange}
-                      placeholder="Type an allergy and press Enter…"
-                    />
-                  </div>
+                  <TagInput
+                    value={field.value}
+                    onChange={field.onChange}
+                    placeholder="Type an allergy and press Enter…"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -298,13 +297,11 @@ export function PatientForm({ defaultValues, onSubmit, isSubmitting, submitLabel
               <FormItem>
                 <FormLabel>Conditions</FormLabel>
                 <FormControl>
-                  <div>
-                    <TagInput
-                      value={field.value}
-                      onChange={field.onChange}
-                      placeholder="Type a condition and press Enter…"
-                    />
-                  </div>
+                  <TagInput
+                    value={field.value}
+                    onChange={field.onChange}
+                    placeholder="Type a condition and press Enter…"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

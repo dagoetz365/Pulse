@@ -43,10 +43,10 @@ class TestAddNote:
         assert body["timestamp"].startswith("2025-06-01")
 
     def test_add_note_empty_content(self, client: TestClient, sample_patient: dict):
-        """An empty-string content returns 422."""
+        """An empty-string content returns 400."""
         patient_id = sample_patient["id"]
         resp = client.post(_notes_url(patient_id), json={"content": "   "})
-        assert resp.status_code == 422
+        assert resp.status_code == 400
 
     def test_add_note_patient_not_found(self, client: TestClient):
         """Adding a note to a non-existent patient returns 404."""
