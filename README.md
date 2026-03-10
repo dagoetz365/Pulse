@@ -79,7 +79,7 @@ healthcare-dashboard/
 │   │   │   ├── dashboard/      # Status chart
 │   │   │   └── common/         # Shared components (Pagination, ErrorBoundary)
 │   │   ├── hooks/              # React Query hooks (usePatients, useNotes, useSummary)
-│   │   ├── store/              # Zustand state stores (patientStore, uiStore)
+│   │   ├── store/              # Zustand state stores (patientStore, uiStore, settingsStore)
 │   │   ├── pages/              # Route pages (lazy-loaded)
 │   │   ├── types/              # TypeScript interfaces
 │   │   └── lib/                # API client, utilities
@@ -97,7 +97,7 @@ healthcare-dashboard/
 - **shadcn/ui** — accessible component primitives built on Radix UI
 - **Tailwind CSS** — utility-first styling with Ascertain brand tokens
 - **TanStack Query v5** — server state management with caching and deduplication
-- **Zustand** — lightweight client state (filters, sidebar toggle)
+- **Zustand** — lightweight client state (filters, sidebar toggle, settings with localStorage persistence)
 - **React Hook Form + Zod** — type-safe form validation mirroring Pydantic schemas
 - **React Router v6** — client-side routing with lazy-loaded pages
 - **Recharts** — patient status distribution donut chart
@@ -165,6 +165,7 @@ All remaining endpoints are prefixed with `/api/v1`.
 | Pagination | Server-side | Handles 100+ patients efficiently; `page`/`page_size` params with max cap |
 | Search | Debounced (300ms) | Non-blocking UI; only fires API call after user stops typing |
 | Error handling | Axios interceptors + ErrorBoundary | Global request/response error handling; React ErrorBoundary catches render failures |
+| Settings persistence | Zustand persist middleware | Settings stored in localStorage — survives page reloads without backend changes; same Zustand pattern as other stores |
 
 ## Stretch Goals
 
@@ -177,10 +178,14 @@ I chose **two** stretch goals that best demonstrate backend maturity and code qu
 **Additional features implemented beyond stretch goals:**
 - Request logging middleware (method, path, status, duration)
 - Sorting/filtering query parameters on list endpoint
-- Data visualization (patient status donut chart on dashboard)
+- Data visualization (interactive donut chart — click any segment to filter patients by status)
 - Code splitting with React.lazy for all route pages
 - Hot reloading in Docker for both frontend and backend
-- Clickable dashboard stat cards (navigate to filtered patient lists)
+- Clickable dashboard stat cards and chart segments (navigate to filtered patient lists)
+- Settings page with persistent user preferences (notification toggles, appearance — stored in localStorage via Zustand persist)
+- Email patient action on patient profile (mailto: link)
+- Status-colored avatars throughout the dashboard (red for critical, green for active, amber for inactive)
+- Accessible UI: aria-labels on icon-only buttons, semantic HTML, keyboard-navigable
 
 ## Development
 
@@ -244,5 +249,4 @@ See `.env.example` for all available configuration:
 | POSTGRES_PASSWORD | No       | password   | Database password               |
 | POSTGRES_DB       | No       | cura       | Database name                   |
 | DATABASE_URL      | Auto     | —          | Built from above in compose     |
-| GEMINI_API_KEY    | No       | —          | Google Gemini API key           |
-| VITE_API_URL      | No       | /api/v1    | Frontend API base URL           |
+| GEMINI_API_KEY    | No       | —          | Google Gemini API key (backend-only, never exposed to client) |

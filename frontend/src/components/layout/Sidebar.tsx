@@ -1,11 +1,12 @@
 import { NavLink } from "react-router-dom";
-import { Heart, LayoutDashboard, Users, X } from "lucide-react";
+import { Activity, LayoutDashboard, Settings, Users, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useUIStore } from "@/store/uiStore";
 
 const navItems = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard, end: true },
   { to: "/patients", label: "Patients", icon: Users },
+  { to: "/settings", label: "Settings", icon: Settings },
 ];
 
 export function Sidebar() {
@@ -33,7 +34,7 @@ export function Sidebar() {
         <div className="flex items-center justify-between px-5 py-4 border-b border-border">
           <div className="flex items-center gap-2.5">
             <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-primary/10">
-              <Heart className="w-4 h-4 text-primary fill-primary" />
+              <Activity className="w-4 h-4 text-primary" />
             </div>
             <span className="font-display text-lg font-semibold text-foreground tracking-tight">
               Cura

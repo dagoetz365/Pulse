@@ -9,6 +9,17 @@ import { usePatients } from "@/hooks/usePatients";
 import { usePatientStore } from "@/store/patientStore";
 import { formatDate } from "@/lib/utils";
 
+function statusColor(status: string) {
+  switch (status) {
+    case "critical":
+      return "bg-red-50 text-red-600";
+    case "inactive":
+      return "bg-amber-50 text-amber-600";
+    default:
+      return "bg-emerald-50 text-emerald-600";
+  }
+}
+
 function StatCard({
   title,
   value,
@@ -148,6 +159,7 @@ export function DashboardPage() {
                 active={activeCount}
                 critical={criticalCount}
                 inactive={inactiveCount}
+                onSegmentClick={(status) => navigateToPatients(status)}
               />
             )}
           </CardContent>
@@ -248,7 +260,7 @@ export function DashboardPage() {
                   className="flex items-center gap-3 py-3 cursor-pointer hover:bg-muted/50 -mx-2 px-2 rounded-lg transition-colors"
                   onClick={() => navigate(`/patients/${patient.id}`)}
                 >
-                  <div className="flex items-center justify-center w-9 h-9 rounded-full bg-primary/10 text-primary text-xs font-semibold shrink-0">
+                  <div className={`flex items-center justify-center w-9 h-9 rounded-full text-xs font-semibold shrink-0 ${statusColor(patient.status)}`}>
                     {patient.first_name[0]}{patient.last_name[0]}
                   </div>
                   <div className="flex-1 min-w-0">

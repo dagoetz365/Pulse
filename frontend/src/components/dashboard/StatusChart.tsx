@@ -4,6 +4,7 @@ interface StatusChartProps {
   active: number;
   critical: number;
   inactive: number;
+  onSegmentClick?: (status: string) => void;
 }
 
 const COLORS = {
@@ -12,11 +13,11 @@ const COLORS = {
   inactive: "#d97706",  /* warm amber */
 };
 
-export function StatusChart({ active, critical, inactive }: StatusChartProps) {
+export function StatusChart({ active, critical, inactive, onSegmentClick }: StatusChartProps) {
   const data = [
-    { name: "Active", value: active, color: COLORS.active },
-    { name: "Critical", value: critical, color: COLORS.critical },
-    { name: "Inactive", value: inactive, color: COLORS.inactive },
+    { name: "Active", value: active, color: COLORS.active, status: "active" },
+    { name: "Critical", value: critical, color: COLORS.critical, status: "critical" },
+    { name: "Inactive", value: inactive, color: COLORS.inactive, status: "inactive" },
   ].filter((d) => d.value > 0);
 
   const total = active + critical + inactive;
@@ -37,6 +38,12 @@ export function StatusChart({ active, critical, inactive }: StatusChartProps) {
               paddingAngle={3}
               dataKey="value"
               strokeWidth={0}
+              className={onSegmentClick ? "cursor-pointer" : ""}
+              onClick={(_: unknown, index: number) => {
+                if (onSegmentClick && data[index]) {
+                  onSegmentClick(data[index].status);
+                }
+              }}
             >
               {data.map((entry) => (
                 <Cell key={entry.name} fill={entry.color} />
@@ -56,7 +63,11 @@ export function StatusChart({ active, critical, inactive }: StatusChartProps) {
       </div>
       <div className="space-y-2.5">
         {data.map((entry) => (
-          <div key={entry.name} className="flex items-center gap-2.5">
+          <div
+            key={entry.name}
+            className={`flex items-center gap-2.5 ${onSegmentClick ? "cursor-pointer hover:bg-muted/50 -mx-2 px-2 py-1 rounded-md transition-colors" : ""}`}
+            onClick={() => onSegmentClick?.(entry.status)}
+          >
             <div
               className="w-2.5 h-2.5 rounded-full shrink-0"
               style={{ backgroundColor: entry.color }}
