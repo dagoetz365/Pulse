@@ -16,7 +16,7 @@ from app.models.patient import Patient
 PATIENTS = [
     {
         "first_name": "James", "last_name": "Miller",
-        "date_of_birth": date(1958, 3, 14), "email": "james.miller@email.com",
+        "date_of_birth": date(1958, 3, 14), "email": "james.miller@gmail.com",
         "phone": "555-0101", "address": "142 Oak Street, Boston, MA 02108",
         "blood_type": "O+", "allergies": ["Penicillin"],
         "conditions": ["Hypertension", "Type 2 Diabetes"], "status": "active",
@@ -24,7 +24,7 @@ PATIENTS = [
     },
     {
         "first_name": "Sarah", "last_name": "Chen",
-        "date_of_birth": date(1985, 8, 22), "email": "sarah.chen@email.com",
+        "date_of_birth": date(1985, 8, 22), "email": "sarah.chen@yahoo.com",
         "phone": "555-0102", "address": "89 Maple Ave, Cambridge, MA 02139",
         "blood_type": "A+", "allergies": [],
         "conditions": ["Asthma"], "status": "active",
@@ -32,7 +32,7 @@ PATIENTS = [
     },
     {
         "first_name": "Robert", "last_name": "Johnson",
-        "date_of_birth": date(1942, 11, 5), "email": "r.johnson@email.com",
+        "date_of_birth": date(1942, 11, 5), "email": "r.johnson@outlook.com",
         "phone": "555-0103", "address": "301 Pine Road, Brookline, MA 02445",
         "blood_type": "B-", "allergies": ["Sulfa", "Aspirin"],
         "conditions": ["COPD", "Heart Failure", "Atrial Fibrillation"], "status": "critical",
@@ -40,7 +40,7 @@ PATIENTS = [
     },
     {
         "first_name": "Maria", "last_name": "Garcia",
-        "date_of_birth": date(1973, 6, 17), "email": "maria.garcia@email.com",
+        "date_of_birth": date(1973, 6, 17), "email": "maria.garcia@gmail.com",
         "phone": "555-0104", "address": "55 Elm Street, Somerville, MA 02143",
         "blood_type": "AB+", "allergies": ["Latex"],
         "conditions": ["Rheumatoid Arthritis"], "status": "active",
@@ -48,7 +48,7 @@ PATIENTS = [
     },
     {
         "first_name": "David", "last_name": "Kim",
-        "date_of_birth": date(1990, 4, 3), "email": "david.kim@email.com",
+        "date_of_birth": date(1990, 4, 3), "email": "david.kim@icloud.com",
         "phone": "555-0105", "address": "17 Cedar Lane, Newton, MA 02458",
         "blood_type": "O-", "allergies": [],
         "conditions": [], "status": "active",
@@ -56,7 +56,7 @@ PATIENTS = [
     },
     {
         "first_name": "Patricia", "last_name": "Williams",
-        "date_of_birth": date(1965, 9, 30), "email": "p.williams@email.com",
+        "date_of_birth": date(1965, 9, 30), "email": "p.williams@yahoo.com",
         "phone": "555-0106", "address": "228 Birch Blvd, Waltham, MA 02451",
         "blood_type": "A-", "allergies": ["Codeine", "NSAIDs"],
         "conditions": ["Fibromyalgia", "Depression"], "status": "inactive",
@@ -64,7 +64,7 @@ PATIENTS = [
     },
     {
         "first_name": "Michael", "last_name": "Thompson",
-        "date_of_birth": date(1978, 12, 8), "email": "m.thompson@email.com",
+        "date_of_birth": date(1978, 12, 8), "email": "m.thompson@gmail.com",
         "phone": "555-0107", "address": "400 Willow Way, Medford, MA 02155",
         "blood_type": "B+", "allergies": [],
         "conditions": ["Hypertension", "Hyperlipidemia"], "status": "active",
@@ -72,7 +72,7 @@ PATIENTS = [
     },
     {
         "first_name": "Linda", "last_name": "Martinez",
-        "date_of_birth": date(1955, 7, 21), "email": "linda.martinez@email.com",
+        "date_of_birth": date(1955, 7, 21), "email": "linda.martinez@outlook.com",
         "phone": "555-0108", "address": "75 Spruce Street, Arlington, MA 02476",
         "blood_type": "O+", "allergies": ["Penicillin", "Erythromycin"],
         "conditions": ["Osteoporosis", "Type 2 Diabetes", "Hypothyroidism"], "status": "active",
@@ -80,7 +80,7 @@ PATIENTS = [
     },
     {
         "first_name": "Christopher", "last_name": "Davis",
-        "date_of_birth": date(1996, 2, 14), "email": "c.davis@email.com",
+        "date_of_birth": date(1996, 2, 14), "email": "c.davis@gmail.com",
         "phone": "555-0109", "address": "12 Ash Court, Malden, MA 02148",
         "blood_type": "A+", "allergies": [],
         "conditions": ["Anxiety Disorder"], "status": "active",
@@ -88,7 +88,7 @@ PATIENTS = [
     },
     {
         "first_name": "Barbara", "last_name": "Anderson",
-        "date_of_birth": date(1948, 5, 10), "email": "b.anderson@email.com",
+        "date_of_birth": date(1948, 5, 10), "email": "b.anderson@yahoo.com",
         "phone": "555-0110", "address": "190 Chestnut Drive, Quincy, MA 02169",
         "blood_type": "AB-", "allergies": ["Morphine"],
         "conditions": ["Chronic Kidney Disease", "Hypertension", "Anemia"], "status": "critical",
@@ -96,7 +96,7 @@ PATIENTS = [
     },
     {
         "first_name": "Kevin", "last_name": "Wilson",
-        "date_of_birth": date(1982, 10, 27), "email": "k.wilson@email.com",
+        "date_of_birth": date(1982, 10, 27), "email": "k.wilson@icloud.com",
         "phone": "555-0111", "address": "33 Hickory Hill, Lexington, MA 02420",
         "blood_type": "O+", "allergies": [],
         "conditions": ["Crohn's Disease"], "status": "active",
@@ -104,7 +104,7 @@ PATIENTS = [
     },
     {
         "first_name": "Jennifer", "last_name": "Taylor",
-        "date_of_birth": date(1969, 1, 19), "email": "j.taylor@email.com",
+        "date_of_birth": date(1969, 1, 19), "email": "j.taylor@gmail.com",
         "phone": "555-0112", "address": "61 Walnut Street, Belmont, MA 02478",
         "blood_type": "B+", "allergies": ["Sulfonamides"],
         "conditions": ["Lupus", "Raynaud's Phenomenon"], "status": "inactive",
@@ -112,7 +112,7 @@ PATIENTS = [
     },
     {
         "first_name": "Daniel", "last_name": "Brown",
-        "date_of_birth": date(2001, 8, 6), "email": "d.brown@email.com",
+        "date_of_birth": date(2001, 8, 6), "email": "d.brown@outlook.com",
         "phone": "555-0113", "address": "847 Poplar Drive, Watertown, MA 02472",
         "blood_type": "A-", "allergies": ["Tree nuts"],
         "conditions": ["Epilepsy"], "status": "active",
@@ -120,7 +120,7 @@ PATIENTS = [
     },
     {
         "first_name": "Nancy", "last_name": "Jones",
-        "date_of_birth": date(1961, 4, 25), "email": "n.jones@email.com",
+        "date_of_birth": date(1961, 4, 25), "email": "n.jones@yahoo.com",
         "phone": "555-0114", "address": "9 Sycamore Lane, Needham, MA 02492",
         "blood_type": "O-", "allergies": ["Ibuprofen"],
         "conditions": ["Migraine", "Hypertension"], "status": "active",
@@ -128,7 +128,7 @@ PATIENTS = [
     },
     {
         "first_name": "Thomas", "last_name": "White",
-        "date_of_birth": date(1975, 3, 18), "email": "t.white@email.com",
+        "date_of_birth": date(1975, 3, 18), "email": "t.white@gmail.com",
         "phone": "555-0115", "address": "256 Magnolia Ave, Framingham, MA 01701",
         "blood_type": "AB+", "allergies": [],
         "conditions": ["Sleep Apnea", "Obesity"], "status": "active",
@@ -136,7 +136,7 @@ PATIENTS = [
     },
     {
         "first_name": "Sandra", "last_name": "Harris",
-        "date_of_birth": date(1940, 12, 3), "email": "s.harris@email.com",
+        "date_of_birth": date(1940, 12, 3), "email": "s.harris@icloud.com",
         "phone": "555-0116", "address": "18 Magnolia Court, Dedham, MA 02026",
         "blood_type": "A+", "allergies": ["Penicillin", "Tetracycline"],
         "conditions": ["Alzheimer's Disease", "Hypertension", "Osteoarthritis"], "status": "critical",
@@ -144,7 +144,7 @@ PATIENTS = [
     },
     {
         "first_name": "Ryan", "last_name": "Clark",
-        "date_of_birth": date(1993, 7, 12), "email": "r.clark@email.com",
+        "date_of_birth": date(1993, 7, 12), "email": "r.clark@outlook.com",
         "phone": "555-0117", "address": "103 Fir Street, Natick, MA 01760",
         "blood_type": "B-", "allergies": [],
         "conditions": [], "status": "inactive",
@@ -152,7 +152,7 @@ PATIENTS = [
     },
     {
         "first_name": "Emily", "last_name": "Lewis",
-        "date_of_birth": date(1988, 11, 29), "email": "e.lewis@email.com",
+        "date_of_birth": date(1988, 11, 29), "email": "e.lewis@gmail.com",
         "phone": "555-0118", "address": "74 Redwood Road, Norwood, MA 02062",
         "blood_type": "O+", "allergies": ["Shellfish"],
         "conditions": ["PCOS", "Thyroid Nodules"], "status": "active",
