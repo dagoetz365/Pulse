@@ -26,13 +26,21 @@ export function DeletePatientDialog({ patient, trigger }: DeletePatientDialogPro
 
   return (
     <>
-      <span onClick={() => setOpen(true)} className="cursor-pointer">
-        {trigger ?? (
-          <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:text-destructive">
-            <Trash2 className="h-4 w-4" />
-          </Button>
-        )}
-      </span>
+      {trigger ? (
+        <button type="button" onClick={() => setOpen(true)} className="cursor-pointer">
+          {trigger}
+        </button>
+      ) : (
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-8 w-8 text-destructive hover:text-destructive"
+          onClick={() => setOpen(true)}
+          aria-label={`Delete ${patient.full_name}`}
+        >
+          <Trash2 className="h-4 w-4" />
+        </Button>
+      )}
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
           <DialogHeader>

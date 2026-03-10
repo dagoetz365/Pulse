@@ -58,7 +58,7 @@ export function PatientTable({ patients, isLoading }: PatientTableProps) {
   }
 
   return (
-    <div className="rounded-xl border border-border bg-white overflow-hidden">
+    <div className="rounded-xl border border-border bg-card overflow-hidden">
       <Table>
         <TableHeader>
           <TableRow className="hover:bg-transparent border-b-border">
@@ -116,6 +116,7 @@ export function PatientTable({ patients, isLoading }: PatientTableProps) {
                         size="icon"
                         className="h-8 w-8"
                         onClick={() => navigate(`/patients/${patient.id}`)}
+                        aria-label={`View ${patient.full_name}`}
                       >
                         <Eye className="h-4 w-4" />
                       </Button>
@@ -124,6 +125,7 @@ export function PatientTable({ patients, isLoading }: PatientTableProps) {
                         size="icon"
                         className="h-8 w-8"
                         onClick={() => navigate(`/patients/${patient.id}/edit`)}
+                        aria-label={`Edit ${patient.full_name}`}
                       >
                         <Pencil className="h-4 w-4" />
                       </Button>

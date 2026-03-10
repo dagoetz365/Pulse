@@ -1,7 +1,9 @@
+import logging
 from datetime import datetime, timezone
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, status
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from app.dependencies import get_db
@@ -9,6 +11,14 @@ from app.schemas.note import NoteCreate, NoteOut
 from app.services.gemini_service import GeminiService
 from app.services.note_service import NoteService
 from app.services.patient_service import PatientService
+
+logger = logging.getLogger(__name__)
+
+
+class SummaryResponse(BaseModel):
+    summary: str
+    patient_id: str
+    generated_at: str
 
 router = APIRouter()
 
@@ -27,7 +37,7 @@ def add_note(patient_id: UUID, data: NoteCreate, db: Session = Depends(get_db)):
     if not patient:
         raise HTTPException(status_code=404, detail="Patient not found")
     if not data.content.strip():
-        raise HTTPException(status_code=422, detail="Note content cannot be empty")
+        raise HTTPException(status_code=400, detail="Note content cannot be empty")
     return NoteService(db).add_note(patient_id, data)
 
 
@@ -38,7 +48,7 @@ def delete_note(patient_id: UUID, note_id: UUID, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Note not found")
 
 
-@router.get("/{patient_id}/summary")
+@router.get("/{patient_id}/summary", response_model=SummaryResponse)
 def get_summary(patient_id: UUID, db: Session = Depends(get_db)):
     patient = PatientService(db).get_patient(patient_id)
     if not patient:
@@ -46,13 +56,14 @@ def get_summary(patient_id: UUID, db: Session = Depends(get_db)):
     notes = NoteService(db).get_notes(patient_id)
     try:
         summary = GeminiService().generate_summary(patient, notes)
-        return {
-            "summary": summary,
-            "patient_id": str(patient_id),
-            "generated_at": datetime.now(timezone.utc).isoformat(),
-        }
+        return SummaryResponse(
+            summary=summary,
+            patient_id=str(patient_id),
+            generated_at=datetime.now(timezone.utc).isoformat(),
+        )
     except Exception as e:
+        logger.error("Summary generation failed for patient %s: %s", patient_id, e)
         raise HTTPException(
             status_code=503,
-            detail=f"Summary generation failed: {str(e)}",
+            detail="Unable to generate summary. Please try again later.",
         )
