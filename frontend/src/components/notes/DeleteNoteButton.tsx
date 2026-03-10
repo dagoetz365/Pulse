@@ -26,6 +26,7 @@ export function DeleteNoteButton({ patientId, noteId }: DeleteNoteButtonProps) {
         size="icon"
         className="h-7 w-7 text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity"
         onClick={() => setOpen(true)}
+        aria-label="Delete note"
       >
         <Trash2 className="h-3.5 w-3.5" />
       </Button>

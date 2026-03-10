@@ -26,6 +26,7 @@ export function Pagination({ page, totalPages, totalItems, pageSize, onPageChang
           size="sm"
           onClick={() => onPageChange(page - 1)}
           disabled={page === 1}
+          aria-label="Previous page"
         >
           <ChevronLeft className="h-4 w-4" />
           Previous
@@ -49,6 +50,8 @@ export function Pagination({ page, totalPages, totalItems, pageSize, onPageChang
                 size="sm"
                 className="w-8 h-8 p-0"
                 onClick={() => onPageChange(pageNum)}
+                aria-label={`Page ${pageNum}`}
+                aria-current={pageNum === page ? "page" : undefined}
               >
                 {pageNum}
               </Button>
@@ -60,6 +63,7 @@ export function Pagination({ page, totalPages, totalItems, pageSize, onPageChang
           size="sm"
           onClick={() => onPageChange(page + 1)}
           disabled={page === totalPages}
+          aria-label="Next page"
         >
           Next
           <ChevronRight className="h-4 w-4" />

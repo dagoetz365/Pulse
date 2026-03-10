@@ -24,7 +24,7 @@ export function Sidebar() {
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed top-0 left-0 z-30 h-full w-60 bg-white border-r border-border flex flex-col transition-transform duration-200",
+          "fixed top-0 left-0 z-30 h-full w-60 bg-card border-r border-border flex flex-col transition-transform duration-200",
           "lg:translate-x-0 lg:static lg:z-auto",
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         )}
@@ -42,6 +42,7 @@ export function Sidebar() {
           <button
             className="lg:hidden text-muted-foreground hover:text-foreground"
             onClick={() => setSidebarOpen(false)}
+            aria-label="Close sidebar"
           >
             <X className="w-4 h-4" />
           </button>
