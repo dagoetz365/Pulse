@@ -1,3 +1,4 @@
+from datetime import datetime, timezone
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -45,7 +46,11 @@ def get_summary(patient_id: UUID, db: Session = Depends(get_db)):
     notes = NoteService(db).get_notes(patient_id)
     try:
         summary = GeminiService().generate_summary(patient, notes)
-        return {"summary": summary, "patient_id": str(patient_id)}
+        return {
+            "summary": summary,
+            "patient_id": str(patient_id),
+            "generated_at": datetime.now(timezone.utc).isoformat(),
+        }
     except Exception as e:
         raise HTTPException(
             status_code=503,

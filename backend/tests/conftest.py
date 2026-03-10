@@ -10,25 +10,65 @@ Provides:
 SQLite compatibility notes
 --------------------------
 The production models use ``sqlalchemy.dialects.postgresql.UUID`` and
-``sqlalchemy.ARRAY(String)`` — both are PostgreSQL-specific.  Before creating
+``sqlalchemy.ARRAY(String)`` -- both are PostgreSQL-specific.  Before creating
 the tables we patch those columns to use ``String(36)`` and ``JSON``
 respectively so that the same ``Base.metadata`` works on SQLite.
+
+We set DATABASE_URL env-var **before** any app module is imported so that
+the production ``create_engine`` call in ``app.database`` targets SQLite
+rather than PostgreSQL (avoiding the psycopg2 dependency).
 """
 
-import json
+import os
+import sqlite3
+
+# --- Must happen before any app.* import ---
+os.environ["DATABASE_URL"] = "sqlite:///file::memory:?cache=shared&uri=true"
+
 import uuid
 from typing import Generator
 
+# Register adapters so SQLite can bind Python UUID objects as strings
+sqlite3.register_adapter(uuid.UUID, lambda u: str(u))
+sqlite3.register_converter("UUID", lambda b: uuid.UUID(b.decode()))
+
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy import JSON, String, create_engine, event
+from sqlalchemy import JSON, String, TypeDecorator, create_engine, event
 from sqlalchemy.orm import Session, sessionmaker
 
 from app.database import Base
 from app.dependencies import get_db
 from app.main import app
-from app.models.note import Note  # noqa: F401 — ensure model is registered
-from app.models.patient import Patient  # noqa: F401 — ensure model is registered
+from app.models.note import Note  # noqa: F401
+from app.models.patient import Patient  # noqa: F401
+
+
+# ---------------------------------------------------------------------------
+# SQLite-compatible UUID type
+# ---------------------------------------------------------------------------
+
+class SQLiteUUID(TypeDecorator):
+    """A UUID type that stores as String(36) for SQLite compatibility.
+
+    Converts Python ``uuid.UUID`` objects to/from plain strings so that
+    SQLite can store them and ORM filters like ``Patient.id == some_uuid``
+    work correctly.
+    """
+
+    impl = String(36)
+    cache_ok = True
+
+    def process_bind_param(self, value, dialect):
+        if value is not None:
+            return str(value)
+        return value
+
+    def process_result_value(self, value, dialect):
+        if value is not None:
+            return str(value)
+        return value
+
 
 # ---------------------------------------------------------------------------
 # Engine / Session that lives for the whole test session
@@ -58,11 +98,11 @@ def _patch_columns_for_sqlite() -> None:
         col = patient_table.c[col_name]
         col.type = JSON()
 
-    # --- every UUID column -> String(36) ---
+    # --- every UUID column -> SQLiteUUID (String(36) with proper coercion) ---
     for table in (patient_table, note_table):
         for col in table.columns:
             if hasattr(col.type, "as_uuid") or type(col.type).__name__ == "UUID":
-                col.type = String(36)
+                col.type = SQLiteUUID()
 
 
 # ---------------------------------------------------------------------------
@@ -78,27 +118,24 @@ def _create_tables() -> Generator:
     Base.metadata.drop_all(bind=test_engine)
 
 
+@pytest.fixture(autouse=True)
+def _clean_tables() -> Generator:
+    """Delete all rows from every table after each test for isolation."""
+    yield
+    with test_engine.connect() as conn:
+        for table in reversed(Base.metadata.sorted_tables):
+            conn.execute(table.delete())
+        conn.commit()
+
+
 @pytest.fixture()
 def db_session() -> Generator[Session, None, None]:
-    """Yield a fresh SQLAlchemy session; rolls back after every test."""
-    connection = test_engine.connect()
-    transaction = connection.begin()
-    session = TestSessionLocal(bind=connection)
-
-    # Nested transaction so that service-level commits don't actually persist
-    nested = connection.begin_nested()
-
-    @event.listens_for(session, "after_transaction_end")
-    def restart_savepoint(sess, trans):
-        nonlocal nested
-        if trans.nested and not trans._parent.nested:
-            nested = connection.begin_nested()
-
-    yield session
-
-    session.close()
-    transaction.rollback()
-    connection.close()
+    """Yield a plain SQLAlchemy session for the test."""
+    session = TestSessionLocal()
+    try:
+        yield session
+    finally:
+        session.close()
 
 
 @pytest.fixture()
