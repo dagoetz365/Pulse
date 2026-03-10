@@ -9,7 +9,7 @@ export function Header({ title }: HeaderProps) {
   const { toggleSidebar } = useUIStore();
 
   return (
-    <header className="h-14 bg-white border-b border-border flex items-center px-4 gap-4 shrink-0">
+    <header className="h-14 bg-card border-b border-border flex items-center px-4 gap-4 shrink-0">
       <button
         className="lg:hidden text-muted-foreground hover:text-foreground transition-colors"
         onClick={toggleSidebar}
