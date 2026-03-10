@@ -162,6 +162,14 @@ All endpoints are prefixed with `/api/v1`.
 | Pagination | Server-side | Handles 100+ patients efficiently; `page`/`page_size` params |
 | Search | Debounced (300ms) | Non-blocking UI; only fires API call after user stops typing |
 
+## Stretch Goals
+
+I chose **two** stretch goals that best demonstrate backend maturity and code quality:
+
+1. **Database migrations with Alembic** (Advanced Backend) — Versioned schema changes via `alembic/versions/`. The startup script runs `alembic upgrade head` automatically, so any developer can reproduce the exact database state. This also makes it straightforward to evolve the schema over time without manual SQL.
+
+2. **Unit tests for API endpoints** (Testing & Quality) — 33 pytest tests covering all CRUD operations, validation edge cases (invalid email, unknown blood type, empty names), pagination, sorting, filtering, and error responses. Tests run against an in-memory SQLite database for speed: `docker compose exec backend pytest -v`.
+
 ## Development
 
 ### Hot Reload
