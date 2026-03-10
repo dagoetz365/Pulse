@@ -4,38 +4,41 @@
 
 @layer base {
   :root {
-    /* Ascertain brand — warm neutral + brand blue + lavender accent */
-    --background: 36 20% 91%;           /* ~#E9E6E0 warm darker off-white */
-    --foreground: 0 0% 7%;              /* #121212 true black */
+    /* Ascertain brand — cool blue palette */
+    --background: 220 20% 95%;          /* #EEF1F6 cool blue-gray */
+    --foreground: 222 20% 12%;          /* #171D26 dark blue-black */
 
     --card: 0 0% 100%;                  /* white cards */
-    --card-foreground: 0 0% 7%;
+    --card-foreground: 222 20% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 7%;
+    --popover-foreground: 222 20% 12%;
 
     --primary: 228 100% 36%;            /* #002BBA Ascertain brand blue */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 260 100% 88%;          /* #D4C1FF lavender */
-    --secondary-foreground: 228 100% 28%;
+    --secondary: 220 60% 95%;           /* light blue tint */
+    --secondary-foreground: 228 80% 30%;
 
-    --muted: 36 12% 88%;               /* warm muted bg */
-    --muted-foreground: 30 5% 37%;      /* #5E5A56 warm gray */
+    --muted: 220 16% 91%;              /* cool muted bg */
+    --muted-foreground: 220 10% 42%;    /* #5E6878 cool gray */
 
-    --accent: 260 80% 94%;             /* lighter lavender tint */
-    --accent-foreground: 228 100% 28%;
+    --accent: 220 50% 94%;             /* light blue accent */
+    --accent-foreground: 228 80% 30%;
 
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 30 8% 86%;               /* warm border */
-    --input: 30 8% 86%;
+    --border: 220 14% 88%;             /* cool border */
+    --input: 220 14% 88%;
     --ring: 228 100% 36%;
 
     --radius: 0.75rem;
 
-    --sidebar-active: 260 60% 96%;      /* very light lavender highlight */
+    --sidebar-bg: 228 80% 18%;         /* #05154F deep navy */
+    --sidebar-foreground: 220 20% 90%;  /* light text */
+    --sidebar-active: 228 100% 36%;    /* brand blue active */
+    --sidebar-muted: 220 20% 60%;      /* dimmed nav text */
   }
 }
 

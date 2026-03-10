@@ -25,23 +25,24 @@ export function Sidebar() {
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed top-0 left-0 z-30 h-full w-60 bg-card border-r border-border flex flex-col transition-transform duration-200",
+          "fixed top-0 left-0 z-30 h-full w-60 flex flex-col transition-transform duration-200",
           "lg:translate-x-0 lg:static lg:z-auto",
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         )}
+        style={{ backgroundColor: "hsl(var(--sidebar-bg))" }}
       >
         {/* Logo */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-border">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
           <div className="flex items-center gap-2.5">
-            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-primary/10">
-              <Activity className="w-4 h-4 text-primary" />
+            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-white/15">
+              <Activity className="w-4 h-4 text-white" />
             </div>
-            <span className="font-display text-lg font-semibold text-foreground tracking-tight">
+            <span className="font-display text-lg font-semibold text-white tracking-tight">
               Cura
             </span>
           </div>
           <button
-            className="lg:hidden text-muted-foreground hover:text-foreground"
+            className="lg:hidden text-white/60 hover:text-white"
             onClick={() => setSidebarOpen(false)}
             aria-label="Close sidebar"
           >
@@ -61,14 +62,14 @@ export function Sidebar() {
                 cn(
                   "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
                   isActive
-                    ? "bg-sidebar-active text-primary"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                    ? "bg-white/15 text-white"
+                    : "text-white/60 hover:text-white hover:bg-white/10"
                 )
               }
             >
               {({ isActive }) => (
                 <>
-                  <Icon className={cn("w-4 h-4", isActive ? "text-primary" : "text-muted-foreground")} />
+                  <Icon className={cn("w-4 h-4", isActive ? "text-white" : "text-white/60")} />
                   {label}
                 </>
               )}
@@ -77,8 +78,8 @@ export function Sidebar() {
         </nav>
 
         {/* Footer */}
-        <div className="p-4 border-t border-border">
-          <p className="text-xs text-muted-foreground">Cura · Healthcare Platform</p>
+        <div className="p-4 border-t border-white/10">
+          <p className="text-xs text-white/40">Cura · Healthcare Platform</p>
         </div>
       </aside>
     </>
