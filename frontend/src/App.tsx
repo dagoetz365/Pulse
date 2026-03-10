@@ -1,13 +1,45 @@
+import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AppShell } from "@/components/layout/AppShell";
 import { Toaster } from "@/components/ui/toast";
-import { DashboardPage } from "@/pages/DashboardPage";
-import { PatientsPage } from "@/pages/PatientsPage";
-import { PatientDetailPage } from "@/pages/PatientDetailPage";
-import { PatientCreatePage } from "@/pages/PatientCreatePage";
-import { PatientEditPage } from "@/pages/PatientEditPage";
-import { NotFoundPage } from "@/pages/NotFoundPage";
+import { Skeleton } from "@/components/ui/skeleton";
+
+/* ---------- Lazy-loaded route pages (code splitting) ---------- */
+const DashboardPage = lazy(() =>
+  import("@/pages/DashboardPage").then((m) => ({ default: m.DashboardPage }))
+);
+const PatientsPage = lazy(() =>
+  import("@/pages/PatientsPage").then((m) => ({ default: m.PatientsPage }))
+);
+const PatientDetailPage = lazy(() =>
+  import("@/pages/PatientDetailPage").then((m) => ({ default: m.PatientDetailPage }))
+);
+const PatientCreatePage = lazy(() =>
+  import("@/pages/PatientCreatePage").then((m) => ({ default: m.PatientCreatePage }))
+);
+const PatientEditPage = lazy(() =>
+  import("@/pages/PatientEditPage").then((m) => ({ default: m.PatientEditPage }))
+);
+const NotFoundPage = lazy(() =>
+  import("@/pages/NotFoundPage").then((m) => ({ default: m.NotFoundPage }))
+);
+
+function PageLoader() {
+  return (
+    <div className="p-6 space-y-4">
+      <Skeleton className="h-8 w-48" />
+      <Skeleton className="h-4 w-72" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+        <Skeleton className="h-24 rounded-xl" />
+        <Skeleton className="h-24 rounded-xl" />
+        <Skeleton className="h-24 rounded-xl" />
+        <Skeleton className="h-24 rounded-xl" />
+      </div>
+      <Skeleton className="h-64 rounded-xl mt-4" />
+    </div>
+  );
+}
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,12 +56,54 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route element={<AppShell />}>
-            <Route path="/" element={<DashboardPage />} />
-            <Route path="/patients" element={<PatientsPage />} />
-            <Route path="/patients/new" element={<PatientCreatePage />} />
-            <Route path="/patients/:id" element={<PatientDetailPage />} />
-            <Route path="/patients/:id/edit" element={<PatientEditPage />} />
-            <Route path="*" element={<NotFoundPage />} />
+            <Route
+              path="/"
+              element={
+                <Suspense fallback={<PageLoader />}>
+                  <DashboardPage />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/patients"
+              element={
+                <Suspense fallback={<PageLoader />}>
+                  <PatientsPage />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/patients/new"
+              element={
+                <Suspense fallback={<PageLoader />}>
+                  <PatientCreatePage />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/patients/:id"
+              element={
+                <Suspense fallback={<PageLoader />}>
+                  <PatientDetailPage />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/patients/:id/edit"
+              element={
+                <Suspense fallback={<PageLoader />}>
+                  <PatientEditPage />
+                </Suspense>
+              }
+            />
+            <Route
+              path="*"
+              element={
+                <Suspense fallback={<PageLoader />}>
+                  <NotFoundPage />
+                </Suspense>
+              }
+            />
           </Route>
         </Routes>
       </BrowserRouter>
