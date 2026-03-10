@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/inter/700.css";
+@import "@fontsource/playfair-display/400.css";
+@import "@fontsource/playfair-display/600.css";
+@import "@fontsource/playfair-display/700.css";
+
+@layer base {
+  :root {
+    /* Ascertain brand — soft lavender palette */
+    --background: 270 40% 96%;        /* #F0EBF8 */
+    --foreground: 240 5% 12%;         /* #1C1C1E */
+
+    --card: 0 0% 100%;                /* white cards */
+    --card-foreground: 240 5% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 5% 12%;
+
+    --primary: 270 42% 55%;           /* #7C5CBF purple */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 270 35% 95%;         /* lavender tint */
+    --secondary-foreground: 270 42% 35%;
+
+    --muted: 270 20% 96%;
+    --muted-foreground: 240 5% 45%;   /* #6B6B80 */
+
+    --accent: 270 35% 95%;
+    --accent-foreground: 270 42% 35%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 270 25% 88%;            /* #E4DDF0 */
+    --input: 270 25% 88%;
+    --ring: 270 42% 55%;
+
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display;
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply rounded-full bg-border;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-muted-foreground/30;
+}
