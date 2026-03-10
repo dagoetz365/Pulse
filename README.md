@@ -1,252 +1,113 @@
 # Pulse Healthcare — Patient Management Dashboard
 
-A modern, full-stack healthcare dashboard for managing patients, clinical notes, and AI-generated summaries. Built with React (TypeScript), FastAPI, PostgreSQL, and Docker.
+Full-stack dashboard for managing patients, clinical notes, and AI-generated summaries. Interactive charts, real-time search, Gemini-powered narratives — one command to run.
 
 ## Quick Start
 
-### Prerequisites
-
-- [Docker](https://docs.docker.com/get-docker/) & Docker Compose
-- (Optional) A [Google Gemini API key](https://aistudio.google.com/apikey) for AI-powered patient summaries
-
-### 1. Clone & configure
-
 ```bash
 git clone https://github.com/dagoetz365/Cura.git
-cd Cura  # repo name on GitHub
-cp .env.example .env
+cd Cura
+cp .env.example .env          # optionally add GEMINI_API_KEY for AI summaries
+docker compose up --build      # starts frontend, backend, and database
 ```
 
-Edit `.env` to add your Gemini API key (optional — the app falls back to template-based summaries without it):
+Open **http://localhost:5173** — seeds 18 patients with clinical notes on first run.
 
-```env
-GEMINI_API_KEY=your_key_here
-```
+> Gemini API key is optional — summaries fall back to a structured template without it. Free key at [aistudio.google.com](https://aistudio.google.com/apikey).
 
-### 2. Start everything
+## Features
 
-```bash
-docker compose up --build
-```
-
-This starts three services:
-
-| Service    | URL                        | Description                   |
-|------------|----------------------------|-------------------------------|
-| Frontend   | http://localhost:5173       | React dashboard (Vite HMR)   |
-| Backend    | http://localhost:8000       | FastAPI REST API              |
-| PostgreSQL | localhost:5432              | Database                      |
-
-On first startup, the backend automatically:
-1. Runs Alembic migrations to create the schema
-2. Seeds the database with 18 realistic patients and clinical notes
-
-### 3. Verify
-
-```bash
-curl http://localhost:8000/health
-# → {"status":"ok"}
-```
-
-Open http://localhost:5173 in your browser.
-
-## Architecture
-
-```
-healthcare-dashboard/
-├── backend/                    # FastAPI application
-│   ├── app/
-│   │   ├── models/             # SQLAlchemy ORM models
-│   │   ├── schemas/            # Pydantic request/response schemas
-│   │   ├── services/           # Business logic layer
-│   │   ├── routers/            # API route handlers
-│   │   ├── config.py           # Environment configuration
-│   │   ├── database.py         # DB engine & session
-│   │   └── main.py             # FastAPI app entry point
-│   ├── alembic/                # Database migrations
-│   ├── scripts/seed.py         # Sample data seeder
-│   ├── tests/                  # API tests (pytest)
-│   ├── Dockerfile
-│   └── requirements.txt
-├── frontend/                   # React + TypeScript application
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── ui/             # shadcn/ui primitives
-│   │   │   ├── layout/         # AppShell, Header, Sidebar
-│   │   │   ├── patients/       # Patient table, form, filters
-│   │   │   ├── notes/          # Note list, add form
-│   │   │   ├── summary/        # AI summary panel
-│   │   │   ├── dashboard/      # Status chart
-│   │   │   └── common/         # Shared components (Pagination, ErrorBoundary)
-│   │   ├── hooks/              # React Query hooks (usePatients, useNotes, useSummary)
-│   │   ├── store/              # Zustand state stores (patientStore, uiStore, settingsStore)
-│   │   ├── pages/              # Route pages (lazy-loaded)
-│   │   ├── types/              # TypeScript interfaces
-│   │   └── lib/                # API client, utilities
-│   ├── Dockerfile
-│   └── package.json
-├── docker-compose.yml
-├── .env.example
-└── README.md
-```
+- **Dashboard** — Clickable stat cards and interactive donut chart that filter patients by status. Critical patients panel, recent patients with status-colored avatars.
+- **Patient CRUD** — Sortable, paginated table with 350ms debounced search and status filtering. Inline view/edit/delete actions.
+- **Patient Detail** — Two-panel layout: contact info, medical info (blood type, allergy/condition tags), AI summary on the left; clinical note timeline on the right.
+- **Forms** — Zod validation mirroring backend Pydantic schemas. Custom tag input for allergies/conditions (Enter to add, X to remove). Blood type dropdown, status selector.
+- **Clinical Notes** — Chronological timeline, newest-first. Optional custom timestamps. Rejects empty content (400). Validates note ownership on delete.
+- **AI Summary** — On-demand via Gemini 2.5 Flash. Sends patient demographics + all notes → 2–3 paragraph clinical narrative. 10-minute cache. Template fallback if no API key.
 
 ## Tech Stack
 
-### Frontend
-- **React 18** + TypeScript (strict mode) + Vite
-- **shadcn/ui** — accessible component primitives built on Radix UI
-- **Tailwind CSS** — utility-first styling with Ascertain brand tokens
-- **TanStack Query v5** — server state management with caching and deduplication
-- **Zustand** — lightweight client state (filters, sidebar toggle, settings with localStorage persistence)
-- **React Hook Form + Zod** — type-safe form validation mirroring Pydantic schemas
-- **React Router v6** — client-side routing with lazy-loaded pages
-- **Recharts** — patient status distribution donut chart
-- **ESLint + Prettier** — linting with zero-warning policy, Tailwind class sorting
+| Layer | Choice | Why |
+|-------|--------|-----|
+| Frontend | React 18 + TypeScript (strict) + Vite | Type safety, fast HMR |
+| UI | shadcn/ui (Radix primitives) + Tailwind CSS | Accessible, unstyled, full branding control |
+| Server State | TanStack Query v5 | Caching, deduplication, background refetch |
+| Client State | Zustand + persist middleware | Filters, sidebar, settings in localStorage |
+| Forms | React Hook Form + Zod | Mirrors Pydantic — validation on both sides |
+| Backend | FastAPI + SQLAlchemy 2.0 + Alembic | Async, auto-generated OpenAPI docs, versioned migrations |
+| Database | PostgreSQL 15 | ARRAY columns, UUID PKs, cascade deletes |
+| AI | Google Gemini 2.5 Flash | Clinical narrative generation with template fallback |
+| Infra | Docker Compose (3 services) | One command, hot reload via volume mounts |
 
-### Backend
-- **FastAPI** — async Python web framework with auto-generated OpenAPI docs
-- **SQLAlchemy 2.0** — ORM with type hints
-- **Alembic** — versioned database migrations
-- **PostgreSQL 15** — relational database
-- **Pydantic v2** — request/response validation with computed fields
-- **Google Gemini 2.5 Flash** — AI-powered clinical narrative summaries (with template fallback)
+## API
 
-## API Reference
+All endpoints under `/api/v1` except `/health`.
 
-### Health
-| Method | Endpoint  | Description        |
-|--------|-----------|--------------------|
-| GET    | `/health` | Health check       |
+| Method | Endpoint | Status | Notes |
+|--------|----------|--------|-------|
+| GET | `/health` | 200 | |
+| GET | `/patients` | 200 | `page`, `page_size`, `search`, `status`, `sort_by`, `sort_order` |
+| GET | `/patients/{id}` | 200 / 404 | Computed `age` and `full_name` |
+| POST | `/patients` | 201 / 422 | Validates email, blood type, status, non-empty names |
+| PUT | `/patients/{id}` | 200 / 404 | Partial update — only sent fields change |
+| DELETE | `/patients/{id}` | 204 / 404 | Cascade deletes notes |
+| GET | `/patients/{id}/notes` | 200 / 404 | Ordered newest-first |
+| POST | `/patients/{id}/notes` | 201 / 400 | Rejects empty/whitespace |
+| DELETE | `/patients/{id}/notes/{noteId}` | 204 / 404 | Validates note belongs to patient |
+| GET | `/patients/{id}/summary` | 200 / 503 | Gemini or template fallback |
 
-All remaining endpoints are prefixed with `/api/v1`.
+## Testing
 
-### Patients
-| Method | Endpoint         | Description                          |
-|--------|------------------|--------------------------------------|
-| GET    | `/patients`      | List patients (paginated, filterable)|
-| GET    | `/patients/{id}` | Get single patient                   |
-| POST   | `/patients`      | Create patient                       |
-| PUT    | `/patients/{id}` | Update patient                       |
-| DELETE | `/patients/{id}` | Delete patient                       |
+33 pytest tests against in-memory SQLite — no PostgreSQL, no mocking.
 
-**Query parameters for `GET /patients`:**
+```bash
+docker compose exec backend pytest -v
+```
 
-| Param       | Type   | Default     | Description                                    |
-|-------------|--------|-------------|------------------------------------------------|
-| `page`      | int    | 1           | Page number                                    |
-| `page_size` | int    | 10          | Items per page (max 100)                       |
-| `search`    | string | —           | Search by name or email (case-insensitive)     |
-| `status`    | string | —           | Filter by status: active, inactive, critical   |
-| `sort_by`   | string | created_at  | Sort field: last_name, created_at, last_visit, status |
-| `sort_order`| string | desc        | Sort direction: asc, desc                      |
+**Patients (21 tests):** Valid create with computed fields · missing fields (422) · invalid email (422) · invalid blood type `"Z+"` (422) · invalid status `"unknown"` (422) · whitespace-only names (422) · paginated list · search by name · empty search results · filter by status · sort asc/desc · pagination boundary (`page_size=2` with 3 records) · get by ID · 404 on missing · full update · partial update (phone changes, name untouched) · delete → 204 then GET → 404
 
-### Notes
-| Method | Endpoint                        | Description           |
-|--------|---------------------------------|-----------------------|
-| GET    | `/patients/{id}/notes`          | List patient notes    |
-| POST   | `/patients/{id}/notes`          | Add note              |
-| DELETE | `/patients/{id}/notes/{noteId}` | Delete note           |
+**Notes (12 tests):** Add note · custom timestamp · empty content (400) · missing patient (404) · list notes · empty list · missing patient (404) · descending order · delete (204) · missing note (404) · wrong patient ID (404)
 
-### Summary
-| Method | Endpoint                  | Description                      |
-|--------|---------------------------|----------------------------------|
-| GET    | `/patients/{id}/summary`  | AI-generated patient summary     |
+## Design Decisions
 
-## Key Design Decisions
-
-| Decision | Choice | Why |
-|----------|--------|-----|
-| State management | TanStack Query + Zustand | Server state (patients, notes) in Query with caching/dedup; UI state (filters, sidebar) in Zustand — clear separation |
-| Component library | shadcn/ui | Unstyled Radix primitives give full control over branding; no CSS-in-JS runtime; WCAG-accessible out of the box |
-| Form handling | React Hook Form + Zod | Zod schemas mirror Pydantic models; validation runs on both client and server |
-| Service layer | Separate services/ | Keeps routers thin; business logic is testable independently of HTTP layer |
-| AI summaries | Gemini 2.5 Flash + template fallback | Real LLM generates clinical narratives; template fallback ensures the feature works without an API key |
-| Code splitting | React.lazy + Suspense | Each route page is lazy-loaded, reducing initial bundle size |
-| Pagination | Server-side | Handles 100+ patients efficiently; `page`/`page_size` params with max cap |
-| Search | Debounced (300ms) | Non-blocking UI; only fires API call after user stops typing |
-| Error handling | Axios interceptors + ErrorBoundary | Global request/response error handling; React ErrorBoundary catches render failures |
-| Settings persistence | Zustand persist middleware | Settings stored in localStorage — survives page reloads without backend changes; same Zustand pattern as other stores |
+| Decision | Reasoning |
+|----------|-----------|
+| TanStack Query + Zustand | Server state (patients/notes) in Query with cache; client state (filters/sidebar) in Zustand — clear separation |
+| Zod mirrors Pydantic | Same validation rules both sides; server is authority |
+| Gemini → template fallback | Feature always works, even without API key |
+| `services/` separate from `routers/` | Thin routes, testable business logic |
+| `SORTABLE_FIELDS` whitelist | Prevents SQL injection via sort parameter |
+| `React.lazy` on all 7 pages | Code splitting with skeleton fallbacks |
+| Vite proxy (`/api` → backend) | Backend URL never in client bundle; no `VITE_` prefix on secrets |
 
 ## Stretch Goals
 
-I chose **two** stretch goals that best demonstrate backend maturity and code quality:
+Two chosen per the assessment instructions:
 
-1. **Database migrations with Alembic** (Advanced Backend) — Versioned schema changes via `alembic/versions/`. The startup script runs `alembic upgrade head` automatically, so any developer can reproduce the exact database state. This also makes it straightforward to evolve the schema over time without manual SQL.
+1. **Alembic migrations** — Versioned schema, auto-runs on startup via `alembic upgrade head`
+2. **Unit tests** — 33 tests covering CRUD, validation edge cases, pagination, sorting, error responses
 
-2. **Unit tests for API endpoints** (Testing & Quality) — 33 pytest tests covering all CRUD operations, validation edge cases (invalid email, unknown blood type, empty names), pagination, sorting, filtering, and error responses. Tests run against an in-memory SQLite database for speed: `docker compose exec backend pytest -v`.
+**Beyond requirements:** Request logging middleware · interactive donut chart · settings with localStorage persistence · status-colored avatars · email action (mailto:) · accessible UI (aria-labels, semantic HTML, keyboard nav)
 
-**Additional features implemented beyond stretch goals:**
-- Request logging middleware (method, path, status, duration)
-- Sorting/filtering query parameters on list endpoint
-- Data visualization (interactive donut chart — click any segment to filter patients by status)
-- Code splitting with React.lazy for all route pages
-- Hot reloading in Docker for both frontend and backend
-- Clickable dashboard stat cards and chart segments (navigate to filtered patient lists)
-- Settings page with persistent user preferences (notification toggles, appearance — stored in localStorage via Zustand persist)
-- Email patient action on patient profile (mailto: link)
-- Status-colored avatars throughout the dashboard (red for critical, green for active, amber for inactive)
-- Accessible UI: aria-labels on icon-only buttons, semantic HTML, keyboard-navigable
+## Running Without Docker
 
-## Development
-
-### Hot Reload
-
-Both frontend and backend support hot reload via Docker volume mounts:
-- **Frontend**: Vite HMR — edit any `.tsx` file and see changes instantly
-- **Backend**: Uvicorn `--reload` — edit any `.py` file and the server restarts
-
-### Running without Docker
-
-**Backend:**
 ```bash
+# Backend
 cd backend
-python -m venv .venv
-source .venv/bin/activate  # or .venv\Scripts\activate on Windows
+python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-# Start PostgreSQL separately, then:
-alembic upgrade head
-python scripts/seed.py
+alembic upgrade head && python scripts/seed.py
 uvicorn app.main:app --reload --port 8000
-```
 
-**Frontend:**
-```bash
+# Frontend
 cd frontend
-npm install
-npm run dev
+npm install && npm run dev
 ```
-
-### Running Tests
-
-```bash
-# Backend (33 tests)
-docker compose exec backend pytest -v
-
-# Lint + format check
-cd frontend && npm run lint && npm run format
-```
-
-## Security
-
-This project follows a security-first approach:
-
-- **API keys are backend-only** — `GEMINI_API_KEY` is loaded via `pydantic-settings` from `.env` (gitignored). Zero references exist in frontend code; the key never reaches the client.
-- **Parameterized queries** — All database access uses SQLAlchemy ORM; no raw SQL or string interpolation in queries.
-- **Input validation on both sides** — Pydantic schemas validate all API inputs server-side; Zod + React Hook Form validate client-side. Server validation is the authority.
-- **CORS allow-list** — Origins restricted to `localhost:5173`, `frontend:5173`, and `localhost:3000`. Production deployments should update this to the actual domain.
-- **No console.log in production code** — Frontend source contains zero `console.log/debug/warn` statements.
-- **Request logging** — Middleware logs HTTP method, path, status code, and duration for every request.
-- **Secrets management** — `.env` is gitignored and never committed. `.env.example` ships with safe placeholder values only.
-- **Error messages don't leak internals** — API error responses return user-friendly messages; stack traces and internal details are logged server-side only.
 
 ## Environment Variables
 
-See `.env.example` for all available configuration:
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `POSTGRES_DB` | `pulse` | Database name |
+| `GEMINI_API_KEY` | — | Gemini key (backend-only, never exposed to client) |
 
-| Variable          | Required | Default    | Description                     |
-|-------------------|----------|------------|---------------------------------|
-| POSTGRES_USER     | No       | postgres   | Database user                   |
-| POSTGRES_PASSWORD | No       | password   | Database password               |
-| POSTGRES_DB       | No       | pulse      | Database name                   |
-| DATABASE_URL      | Auto     | —          | Built from above in compose     |
-| GEMINI_API_KEY    | No       | —          | Google Gemini API key (backend-only, never exposed to client) |
+See `.env.example` for the full list (`POSTGRES_USER`, `POSTGRES_PASSWORD`, `DATABASE_URL`).
