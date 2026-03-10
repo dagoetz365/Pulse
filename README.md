@@ -76,10 +76,11 @@ healthcare-dashboard/
 │   │   │   ├── patients/       # Patient table, form, filters
 │   │   │   ├── notes/          # Note list, add form
 │   │   │   ├── summary/        # AI summary panel
-│   │   │   └── common/         # Shared components
-│   │   ├── hooks/              # React Query hooks
-│   │   ├── store/              # Zustand state stores
-│   │   ├── pages/              # Route pages
+│   │   │   ├── dashboard/      # Status chart
+│   │   │   └── common/         # Shared components (Pagination, ErrorBoundary)
+│   │   ├── hooks/              # React Query hooks (usePatients, useNotes, useSummary)
+│   │   ├── store/              # Zustand state stores (patientStore, uiStore)
+│   │   ├── pages/              # Route pages (lazy-loaded)
 │   │   ├── types/              # TypeScript interfaces
 │   │   └── lib/                # API client, utilities
 │   ├── Dockerfile
@@ -92,22 +93,23 @@ healthcare-dashboard/
 ## Tech Stack
 
 ### Frontend
-- **React 18** + TypeScript + Vite
+- **React 18** + TypeScript (strict mode) + Vite
 - **shadcn/ui** — accessible component primitives built on Radix UI
-- **Tailwind CSS** — utility-first styling
-- **TanStack Query v5** — server state management with caching
-- **TanStack Table** — headless table with server-side sort/filter
+- **Tailwind CSS** — utility-first styling with Ascertain brand tokens
+- **TanStack Query v5** — server state management with caching and deduplication
 - **Zustand** — lightweight client state (filters, sidebar toggle)
-- **React Hook Form + Zod** — type-safe form validation
-- **React Router v6** — client-side routing
+- **React Hook Form + Zod** — type-safe form validation mirroring Pydantic schemas
+- **React Router v6** — client-side routing with lazy-loaded pages
+- **Recharts** — patient status distribution donut chart
+- **ESLint + Prettier** — linting with zero-warning policy, Tailwind class sorting
 
 ### Backend
-- **FastAPI** — async Python web framework
+- **FastAPI** — async Python web framework with auto-generated OpenAPI docs
 - **SQLAlchemy 2.0** — ORM with type hints
-- **Alembic** — database migrations
+- **Alembic** — versioned database migrations
 - **PostgreSQL 15** — relational database
-- **Pydantic v2** — request/response validation
-- **Google Gemini 2.5 Flash** — AI patient summaries (optional)
+- **Pydantic v2** — request/response validation with computed fields
+- **Google Gemini 2.5 Flash** — AI-powered clinical narrative summaries (with template fallback)
 
 ## API Reference
 
@@ -155,12 +157,14 @@ All remaining endpoints are prefixed with `/api/v1`.
 | Decision | Choice | Why |
 |----------|--------|-----|
 | State management | TanStack Query + Zustand | Server state (patients, notes) in Query with caching/dedup; UI state (filters, sidebar) in Zustand — clear separation |
-| Component library | shadcn/ui | Unstyled Radix primitives give full control over branding; no CSS-in-JS runtime |
+| Component library | shadcn/ui | Unstyled Radix primitives give full control over branding; no CSS-in-JS runtime; WCAG-accessible out of the box |
 | Form handling | React Hook Form + Zod | Zod schemas mirror Pydantic models; validation runs on both client and server |
-| Service layer | Separate services/ | Keeps routers thin; business logic is testable independently |
-| AI summaries | On-demand + cached | Summary only generated when user clicks "Generate"; cached 10min to avoid API waste |
-| Pagination | Server-side | Handles 100+ patients efficiently; `page`/`page_size` params |
+| Service layer | Separate services/ | Keeps routers thin; business logic is testable independently of HTTP layer |
+| AI summaries | Gemini 2.5 Flash + template fallback | Real LLM generates clinical narratives; template fallback ensures the feature works without an API key |
+| Code splitting | React.lazy + Suspense | Each route page is lazy-loaded, reducing initial bundle size |
+| Pagination | Server-side | Handles 100+ patients efficiently; `page`/`page_size` params with max cap |
 | Search | Debounced (300ms) | Non-blocking UI; only fires API call after user stops typing |
+| Error handling | Axios interceptors + ErrorBoundary | Global request/response error handling; React ErrorBoundary catches render failures |
 
 ## Stretch Goals
 
@@ -169,6 +173,14 @@ I chose **two** stretch goals that best demonstrate backend maturity and code qu
 1. **Database migrations with Alembic** (Advanced Backend) — Versioned schema changes via `alembic/versions/`. The startup script runs `alembic upgrade head` automatically, so any developer can reproduce the exact database state. This also makes it straightforward to evolve the schema over time without manual SQL.
 
 2. **Unit tests for API endpoints** (Testing & Quality) — 33 pytest tests covering all CRUD operations, validation edge cases (invalid email, unknown blood type, empty names), pagination, sorting, filtering, and error responses. Tests run against an in-memory SQLite database for speed: `docker compose exec backend pytest -v`.
+
+**Additional features implemented beyond stretch goals:**
+- Request logging middleware (method, path, status, duration)
+- Sorting/filtering query parameters on list endpoint
+- Data visualization (patient status donut chart on dashboard)
+- Code splitting with React.lazy for all route pages
+- Hot reloading in Docker for both frontend and backend
+- Clickable dashboard stat cards (navigate to filtered patient lists)
 
 ## Development
 
@@ -202,11 +214,11 @@ npm run dev
 ### Running Tests
 
 ```bash
-# Backend
+# Backend (33 tests)
 docker compose exec backend pytest -v
 
-# Frontend
-cd frontend && npm test
+# Lint + format check
+cd frontend && npm run lint && npm run format
 ```
 
 ## Security
