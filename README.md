@@ -67,26 +67,12 @@ docker compose exec backend pytest -v
 
 **Notes (12 tests):** Add note · custom timestamp · empty content (400) · missing patient (404) · list notes · empty list · missing patient (404) · descending order · delete (204) · missing note (404) · wrong patient ID (404)
 
-## Design Decisions
-
-| Decision | Reasoning |
-|----------|-----------|
-| TanStack Query + Zustand | Server state (patients/notes) in Query with cache; client state (filters/sidebar) in Zustand — clear separation |
-| Zod mirrors Pydantic | Same validation rules both sides; server is authority |
-| Gemini → template fallback | Feature always works, even without API key |
-| `services/` separate from `routers/` | Thin routes, testable business logic |
-| `SORTABLE_FIELDS` whitelist | Prevents SQL injection via sort parameter |
-| `React.lazy` on all 7 pages | Code splitting with skeleton fallbacks |
-| Vite proxy (`/api` → backend) | Backend URL never in client bundle; no `VITE_` prefix on secrets |
-
 ## Stretch Goals
 
 Two chosen per the assessment instructions:
 
 1. **Alembic migrations** — Versioned schema, auto-runs on startup via `alembic upgrade head`
 2. **Unit tests** — 33 tests covering CRUD, validation edge cases, pagination, sorting, error responses
-
-**Beyond requirements:** Request logging middleware · interactive donut chart · settings with localStorage persistence · status-colored avatars · email action (mailto:) · accessible UI (aria-labels, semantic HTML, keyboard nav)
 
 ## Running Without Docker
 
