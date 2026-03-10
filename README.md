@@ -44,7 +44,7 @@ On first startup, the backend automatically:
 ### 3. Verify
 
 ```bash
-curl http://localhost:8000/api/v1/health
+curl http://localhost:8000/health
 # → {"status":"ok"}
 ```
 
@@ -75,7 +75,7 @@ healthcare-dashboard/
 │   │   │   ├── layout/         # AppShell, Header, Sidebar
 │   │   │   ├── patients/       # Patient table, form, filters
 │   │   │   ├── notes/          # Note list, add form
-│   │   │   └── summary/        # AI summary panel
+│   │   │   ├── summary/        # AI summary panel
 │   │   │   └── common/         # Shared components
 │   │   ├── hooks/              # React Query hooks
 │   │   ├── store/              # Zustand state stores
@@ -111,12 +111,12 @@ healthcare-dashboard/
 
 ## API Reference
 
-All endpoints are prefixed with `/api/v1`.
-
 ### Health
 | Method | Endpoint  | Description        |
 |--------|-----------|--------------------|
 | GET    | `/health` | Health check       |
+
+All remaining endpoints are prefixed with `/api/v1`.
 
 ### Patients
 | Method | Endpoint         | Description                          |
@@ -208,6 +208,19 @@ docker compose exec backend pytest -v
 # Frontend
 cd frontend && npm test
 ```
+
+## Security
+
+This project follows a security-first approach:
+
+- **API keys are backend-only** — `GEMINI_API_KEY` is loaded via `pydantic-settings` from `.env` (gitignored). Zero references exist in frontend code; the key never reaches the client.
+- **Parameterized queries** — All database access uses SQLAlchemy ORM; no raw SQL or string interpolation in queries.
+- **Input validation on both sides** — Pydantic schemas validate all API inputs server-side; Zod + React Hook Form validate client-side. Server validation is the authority.
+- **CORS allow-list** — Origins restricted to `localhost:5173`, `frontend:5173`, and `localhost:3000`. Production deployments should update this to the actual domain.
+- **No console.log in production code** — Frontend source contains zero `console.log/debug/warn` statements.
+- **Request logging** — Middleware logs HTTP method, path, status code, and duration for every request.
+- **Secrets management** — `.env` is gitignored and never committed. `.env.example` ships with safe placeholder values only.
+- **Error messages don't leak internals** — API error responses return user-friendly messages; stack traces and internal details are logged server-side only.
 
 ## Environment Variables
 
