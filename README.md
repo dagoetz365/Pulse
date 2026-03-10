@@ -12,8 +12,8 @@ A modern, full-stack healthcare dashboard for managing patients, clinical notes,
 ### 1. Clone & configure
 
 ```bash
-git clone <repo-url>
-cd healthcare-dashboard
+git clone https://github.com/dagoetz365/Cura.git
+cd Cura
 cp .env.example .env
 ```
 
