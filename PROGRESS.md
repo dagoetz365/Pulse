@@ -1,8 +1,8 @@
-# Cura — Build Progress & Interview Prep
+# Pulse Healthcare — Build Progress & Interview Prep
 
 Healthcare patient management dashboard built for Ascertain take-home assessment.
 
-**App**: Cura | **Stack**: React 18 + TypeScript + Vite, FastAPI, PostgreSQL, Docker | **AI**: Gemini 2.5 Flash
+**App**: Pulse Healthcare | **Stack**: React 18 + TypeScript + Vite, FastAPI, PostgreSQL, Docker | **AI**: Gemini 2.5 Flash
 
 ---
 
@@ -14,8 +14,8 @@ Healthcare patient management dashboard built for Ascertain take-home assessment
 - [x] Read and analyzed full take-home prompt (Parts 1-5 + stretch goals)
 - [x] Researched UI references: Preclinic healthcare admin template for layout structure
 - [x] Studied Ascertain's actual website for brand colors (soft lavender #F0EBF8, purple accent #7C5CBF)
-- [x] Decided NOT to use Ascertain logo — used neutral branding with "Cura" name
-- [x] Chose app name: **Cura** (Latin for "care") — professional, medical, distinctive
+- [x] Decided NOT to use Ascertain logo — used neutral branding with "Pulse Healthcare" name
+- [x] Chose app name: **Pulse Healthcare** — clean, recognizable, matches the EKG icon
 - [x] Evaluated LLM options: Gemini 1.5 Flash (deprecated/dead), 2.0 Flash (retiring June 2026) → chose **Gemini 2.5 Flash** (best current free-tier model)
 - [x] Defined full tech stack and architecture plan
 

@@ -25,7 +25,7 @@ export const useSettingsStore = create<SettingsState>()(
   persist(
     (set) => ({
       displayName: "Daniel Goetz",
-      email: "d.goetz@cura.health",
+      email: "d.goetz@pulse.health",
       role: "Administrator",
 
       emailNotifications: true,
@@ -43,7 +43,7 @@ export const useSettingsStore = create<SettingsState>()(
       setCompactMode: (compactMode) => set({ compactMode }),
     }),
     {
-      name: "cura-settings",
+      name: "pulse-settings",
     }
   )
 );

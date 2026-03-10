@@ -1,8 +1,8 @@
-# Cura — Test Documentation
+# Pulse Healthcare — Test Documentation
 
 ## Overview
 
-This document describes the testing strategy, test structure, and how to run tests for the Cura healthcare dashboard.
+This document describes the testing strategy, test structure, and how to run tests for the Pulse Healthcare dashboard.
 
 ---
 

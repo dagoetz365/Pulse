@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from app.routers import health, notes, patients
 
-logger = logging.getLogger("cura")
+logger = logging.getLogger("pulse")
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 
 
@@ -18,7 +18,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="Cura API",
+    title="Pulse Healthcare API",
     description="Healthcare patient management dashboard API",
     version="1.0.0",
     lifespan=lifespan,

@@ -1,4 +1,4 @@
-# Cura — Healthcare Patient Management Dashboard
+# Pulse Healthcare — Patient Management Dashboard
 
 A modern, full-stack healthcare dashboard for managing patients, clinical notes, and AI-generated summaries. Built with React (TypeScript), FastAPI, PostgreSQL, and Docker.
 
@@ -13,7 +13,7 @@ A modern, full-stack healthcare dashboard for managing patients, clinical notes,
 
 ```bash
 git clone https://github.com/dagoetz365/Cura.git
-cd Cura
+cd Cura  # repo name on GitHub
 cp .env.example .env
 ```
 
@@ -247,6 +247,6 @@ See `.env.example` for all available configuration:
 |-------------------|----------|------------|---------------------------------|
 | POSTGRES_USER     | No       | postgres   | Database user                   |
 | POSTGRES_PASSWORD | No       | password   | Database password               |
-| POSTGRES_DB       | No       | cura       | Database name                   |
+| POSTGRES_DB       | No       | pulse      | Database name                   |
 | DATABASE_URL      | Auto     | —          | Built from above in compose     |
 | GEMINI_API_KEY    | No       | —          | Google Gemini API key (backend-only, never exposed to client) |

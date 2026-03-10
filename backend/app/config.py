@@ -2,7 +2,7 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    DATABASE_URL: str = "postgresql://postgres:password@db:5432/cura"
+    DATABASE_URL: str = "postgresql://postgres:password@db:5432/pulse"
     GEMINI_API_KEY: str = ""
     CORS_ORIGINS: list[str] = [
         "http://localhost:5173",
