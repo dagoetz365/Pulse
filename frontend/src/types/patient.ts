@@ -16,6 +16,12 @@ export interface Patient {
   conditions: string[];
   status: PatientStatus;
   last_visit: string | null;
+  insurance_provider: string | null;
+  insurance_policy_number: string | null;
+  insurance_group_number: string | null;
+  medical_history: string | null;
+  family_history: string[];
+  consent_forms: string[];
   created_at: string;
   updated_at: string;
 }
@@ -32,6 +38,12 @@ export interface PatientCreate {
   conditions?: string[];
   status?: PatientStatus;
   last_visit?: string | null;
+  insurance_provider?: string | null;
+  insurance_policy_number?: string | null;
+  insurance_group_number?: string | null;
+  medical_history?: string | null;
+  family_history?: string[];
+  consent_forms?: string[];
 }
 
 export type PatientUpdate = Partial<PatientCreate>;

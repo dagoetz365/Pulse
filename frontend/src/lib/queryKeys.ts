@@ -7,6 +7,9 @@ export const queryKeys = {
   notes: {
     list: (patientId: string) => ["notes", patientId] as const,
   },
+  labs: {
+    list: (patientId: string) => ["labs", patientId] as const,
+  },
   summary: {
     get: (patientId: string) => ["summary", patientId] as const,
   },

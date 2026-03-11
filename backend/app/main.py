@@ -6,7 +6,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
-from app.routers import health, notes, patients
+from app.routers import health, labs, notes, patients
 
 logger = logging.getLogger("pulse")
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
@@ -45,3 +45,4 @@ app.add_middleware(
 app.include_router(health.router, tags=["Health"])
 app.include_router(patients.router, prefix="/api/v1/patients", tags=["Patients"])
 app.include_router(notes.router, prefix="/api/v1/patients", tags=["Notes"])
+app.include_router(labs.router, prefix="/api/v1/patients", tags=["Labs"])

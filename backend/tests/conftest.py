@@ -40,6 +40,7 @@ from sqlalchemy.orm import Session, sessionmaker
 from app.database import Base
 from app.dependencies import get_db
 from app.main import app
+from app.models.lab import Lab  # noqa: F401
 from app.models.note import Note  # noqa: F401
 from app.models.patient import Patient  # noqa: F401
 
@@ -92,14 +93,15 @@ def _patch_columns_for_sqlite() -> None:
     """Replace ARRAY and PostgreSQL UUID columns with SQLite-friendly types."""
     patient_table = Base.metadata.tables["patients"]
     note_table = Base.metadata.tables["notes"]
+    lab_table = Base.metadata.tables["labs"]
 
-    # --- patients.allergies / patients.conditions: ARRAY(String) -> JSON ---
-    for col_name in ("allergies", "conditions"):
+    # --- patients ARRAY columns: ARRAY(String) -> JSON ---
+    for col_name in ("allergies", "conditions", "family_history", "consent_forms"):
         col = patient_table.c[col_name]
         col.type = JSON()
 
     # --- every UUID column -> SQLiteUUID (String(36) with proper coercion) ---
-    for table in (patient_table, note_table):
+    for table in (patient_table, note_table, lab_table):
         for col in table.columns:
             if hasattr(col.type, "as_uuid") or type(col.type).__name__ == "UUID":
                 col.type = SQLiteUUID()
@@ -169,6 +171,12 @@ SAMPLE_PATIENT_PAYLOAD = {
     "conditions": ["hypertension"],
     "status": "active",
     "last_visit": "2025-01-10",
+    "insurance_provider": "Aetna",
+    "insurance_policy_number": "AET-12345",
+    "insurance_group_number": "GRP-001",
+    "medical_history": "No significant past medical history.",
+    "family_history": ["hypertension"],
+    "consent_forms": ["HIPAA Privacy Notice"],
 }
 
 
@@ -186,5 +194,15 @@ def sample_note(client: TestClient, sample_patient: dict) -> dict:
     patient_id = sample_patient["id"]
     payload = {"content": "Initial consultation. Patient in good health."}
     resp = client.post(f"/api/v1/patients/{patient_id}/notes", json=payload)
+    assert resp.status_code == 201, resp.text
+    return resp.json()
+
+
+@pytest.fixture()
+def sample_lab(client: TestClient, sample_patient: dict) -> dict:
+    """Create a lab for the sample patient and return the response JSON."""
+    patient_id = sample_patient["id"]
+    payload = {"test_name": "Complete Blood Count (CBC)"}
+    resp = client.post(f"/api/v1/patients/{patient_id}/labs", json=payload)
     assert resp.status_code == 201, resp.text
     return resp.json()

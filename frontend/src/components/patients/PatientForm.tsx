@@ -37,6 +37,12 @@ const patientSchema = z.object({
   status: z.enum(["active", "inactive", "critical"]).default("active"),
   allergies: z.array(z.string()).default([]),
   conditions: z.array(z.string()).default([]),
+  insurance_provider: z.string().optional().nullable(),
+  insurance_policy_number: z.string().optional().nullable(),
+  insurance_group_number: z.string().optional().nullable(),
+  medical_history: z.string().optional().nullable(),
+  family_history: z.array(z.string()).default([]),
+  consent_forms: z.array(z.string()).default([]),
 });
 
 type FormValues = z.infer<typeof patientSchema>;
@@ -123,6 +129,12 @@ export function PatientForm({ defaultValues, onSubmit, isSubmitting, submitLabel
       status: defaultValues?.status ?? "active",
       allergies: defaultValues?.allergies ?? [],
       conditions: defaultValues?.conditions ?? [],
+      insurance_provider: defaultValues?.insurance_provider ?? "",
+      insurance_policy_number: defaultValues?.insurance_policy_number ?? "",
+      insurance_group_number: defaultValues?.insurance_group_number ?? "",
+      medical_history: defaultValues?.medical_history ?? "",
+      family_history: defaultValues?.family_history ?? [],
+      consent_forms: defaultValues?.consent_forms ?? [],
     },
   });
 
@@ -301,6 +313,113 @@ export function PatientForm({ defaultValues, onSubmit, isSubmitting, submitLabel
                     value={field.value}
                     onChange={field.onChange}
                     placeholder="Type a condition and press Enter…"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        {/* Insurance Information */}
+        <div className="space-y-4">
+          <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
+            Insurance Information
+          </h3>
+          <FormField
+            control={form.control}
+            name="insurance_provider"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Insurance Provider</FormLabel>
+                <FormControl>
+                  <Input placeholder="Blue Cross, Aetna, Medicare…" {...field} value={field.value ?? ""} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <FormField
+              control={form.control}
+              name="insurance_policy_number"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Policy Number</FormLabel>
+                  <FormControl>
+                    <Input placeholder="BCB-2024-12345" {...field} value={field.value ?? ""} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="insurance_group_number"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Group Number</FormLabel>
+                  <FormControl>
+                    <Input placeholder="GRP-445" {...field} value={field.value ?? ""} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        </div>
+
+        {/* Medical History */}
+        <div className="space-y-4">
+          <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
+            History & Consent
+          </h3>
+          <FormField
+            control={form.control}
+            name="medical_history"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Medical History</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="Past medical history, surgical history, medications…"
+                    className="min-h-[80px]"
+                    {...field}
+                    value={field.value ?? ""}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="family_history"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Family History</FormLabel>
+                <FormControl>
+                  <TagInput
+                    value={field.value}
+                    onChange={field.onChange}
+                    placeholder="e.g., Heart Disease (father)…"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="consent_forms"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Consent Forms</FormLabel>
+                <FormControl>
+                  <TagInput
+                    value={field.value}
+                    onChange={field.onChange}
+                    placeholder="e.g., HIPAA Privacy Notice…"
                   />
                 </FormControl>
                 <FormMessage />

@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 
-from sqlalchemy import ARRAY, Column, Date, DateTime, String, func
+from sqlalchemy import ARRAY, Column, Date, DateTime, String, Text, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 
@@ -26,7 +26,20 @@ class Patient(Base):
     status = Column(String(20), nullable=False, default="active")  # active/inactive/critical
     last_visit = Column(Date)
 
+    # Insurance
+    insurance_provider = Column(String(255))
+    insurance_policy_number = Column(String(100))
+    insurance_group_number = Column(String(100))
+
+    # History
+    medical_history = Column(Text)
+    family_history = Column(ARRAY(String), server_default="{}")
+
+    # Consent
+    consent_forms = Column(ARRAY(String), server_default="{}")
+
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
     notes = relationship("Note", back_populates="patient", cascade="all, delete-orphan", order_by="Note.timestamp.desc()")
+    labs = relationship("Lab", back_populates="patient", cascade="all, delete-orphan", order_by="Lab.ordered_date.desc()")

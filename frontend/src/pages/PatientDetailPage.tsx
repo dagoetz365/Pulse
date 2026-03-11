@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, Pencil, Phone, Mail, MapPin, Droplets, Calendar } from "lucide-react";
+import { ArrowLeft, Pencil, Phone, Mail, MapPin, Droplets, Calendar, Shield, Heart, FileCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -8,6 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { StatusBadge } from "@/components/patients/StatusBadge";
 import { DeletePatientDialog } from "@/components/patients/DeletePatientDialog";
 import { NoteList } from "@/components/notes/NoteList";
+import { LabList } from "@/components/labs/LabList";
 import { SummaryPanel } from "@/components/summary/SummaryPanel";
 import { usePatient } from "@/hooks/usePatient";
 import { formatDate } from "@/lib/utils";
@@ -133,6 +134,20 @@ export function PatientDetailPage() {
             </CardContent>
           </Card>
 
+          {/* Insurance info — only show if any field populated */}
+          {!isLoading && patient && (patient.insurance_provider || patient.insurance_policy_number) && (
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm font-semibold">Insurance</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <InfoRow icon={Shield} label="Provider" value={patient.insurance_provider} />
+                <InfoRow icon={Shield} label="Policy #" value={patient.insurance_policy_number} />
+                <InfoRow icon={Shield} label="Group #" value={patient.insurance_group_number} />
+              </CardContent>
+            </Card>
+          )}
+
           {/* Medical info */}
           <Card>
             <CardHeader className="pb-3">
@@ -170,13 +185,49 @@ export function PatientDetailPage() {
                       </div>
                     </div>
                   )}
-                  {!patient!.blood_type && patient!.allergies.length === 0 && patient!.conditions.length === 0 && (
+                  {patient!.medical_history && (
+                    <div>
+                      <p className="text-xs text-muted-foreground mb-1.5">Medical History</p>
+                      <p className="text-sm leading-relaxed">{patient!.medical_history}</p>
+                    </div>
+                  )}
+                  {patient!.family_history.length > 0 && (
+                    <div>
+                      <p className="text-xs text-muted-foreground mb-1.5">Family History</p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {patient!.family_history.map((f) => (
+                          <Badge key={f} variant="outline" className="text-xs">
+                            <Heart className="h-3 w-3 mr-1" />{f}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {!patient!.blood_type && patient!.allergies.length === 0 && patient!.conditions.length === 0 && !patient!.medical_history && patient!.family_history.length === 0 && (
                     <p className="text-sm text-muted-foreground">No medical information recorded.</p>
                   )}
                 </>
               )}
             </CardContent>
           </Card>
+
+          {/* Consent forms — only show if populated */}
+          {!isLoading && patient && patient.consent_forms.length > 0 && (
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm font-semibold">Consent Forms</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-wrap gap-1.5">
+                  {patient.consent_forms.map((form) => (
+                    <Badge key={form} variant="outline" className="text-xs">
+                      <FileCheck className="h-3 w-3 mr-1" />{form}
+                    </Badge>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
           {/* AI Summary */}
           <Card>
@@ -186,15 +237,25 @@ export function PatientDetailPage() {
           </Card>
         </div>
 
-        {/* Right column — notes */}
-        <div className="lg:col-span-2">
-          <Card className="h-full">
+        {/* Right column — notes & labs */}
+        <div className="lg:col-span-2 space-y-6">
+          <Card>
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-semibold">Clinical Notes</CardTitle>
             </CardHeader>
             <Separator />
             <CardContent className="pt-4">
               {id && <NoteList patientId={id} />}
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm font-semibold">Labs & Results</CardTitle>
+            </CardHeader>
+            <Separator />
+            <CardContent className="pt-4">
+              {id && <LabList patientId={id} />}
             </CardContent>
           </Card>
         </div>
