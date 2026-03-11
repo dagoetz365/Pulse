@@ -88,10 +88,13 @@ docker compose exec backend pytest -v
 
 ## Stretch Goals
 
-Two chosen per the assessment instructions:
-
-1. **Alembic migrations** — Versioned schema, auto-runs on startup via `alembic upgrade head`
-2. **Unit tests** — 48 tests covering CRUD, validation edge cases, pagination, sorting, error responses
+1. **Alembic migrations** — Two versioned migrations, auto-run on startup via `alembic upgrade head`
+2. **Unit tests** — 48 pytest tests covering CRUD, validation edge cases, pagination, sorting, error responses
+3. **Code splitting & lazy loading** — Route-level `React.lazy()` with `<Suspense>` skeleton loaders
+4. **Dark/light theme** — Toggle in settings, persisted via Zustand + localStorage
+5. **Data visualization** — Interactive donut chart (Recharts) with clickable segments that filter patients
+6. **Sorting/filtering query params** — `sort_by`, `sort_order`, `status`, `search` on list endpoint
+7. **Hot reloading in Docker** — Volume mounts for both frontend (Vite HMR) and backend (uvicorn `--reload`)
 
 ## Running Without Docker
 
