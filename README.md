@@ -5,8 +5,8 @@ Full-stack dashboard for managing patients, clinical notes, and AI-generated sum
 ## Quick Start
 
 ```bash
-git clone https://github.com/dagoetz365/Cura.git
-cd Cura
+git clone https://github.com/dagoetz365/Pulse.git
+cd Pulse
 cp .env.example .env          # optionally add GEMINI_API_KEY for AI summaries
 docker compose up --build      # starts frontend, backend, and database
 ```
