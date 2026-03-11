@@ -19,8 +19,10 @@ Open **http://localhost:5173** — seeds 18 patients with clinical notes on firs
 
 - **Dashboard** — Clickable stat cards and interactive donut chart that filter patients by status. Critical patients panel, recent patients with status-colored avatars.
 - **Patient CRUD** — Sortable, paginated table with 350ms debounced search and status filtering. Inline view/edit/delete actions.
-- **Patient Detail** — Two-panel layout: contact info, medical info (blood type, allergy/condition tags), AI summary on the left; clinical note timeline on the right.
-- **Forms** — Zod validation mirroring backend Pydantic schemas. Custom tag input for allergies/conditions (Enter to add, X to remove). Blood type dropdown, status selector.
+- **Patient Detail** — Two-panel layout. Left: contact info, insurance details, medical info (blood type, allergy/condition tags, medical history, family history), consent forms, AI summary. Right: clinical note timeline and lab results.
+- **Labs & Results** — Order lab tests, track status (ordered → in progress → completed), record results with dates and notes. Full CRUD with cascade delete on patient removal.
+- **Insurance & Clinical Data** — Insurance provider/policy/group fields, free-text medical history, family history tags, consent form tracking — all optional, shown only when populated.
+- **Forms** — Zod validation mirroring backend Pydantic schemas. Custom tag input for allergies/conditions/family history/consent forms (Enter to add, X to remove). Blood type dropdown, status selector.
 - **Clinical Notes** — Chronological timeline, newest-first. Optional custom timestamps. Rejects empty content (400). Validates note ownership on delete.
 - **AI Summary** — On-demand via Gemini 2.5 Flash. Sends patient demographics + all notes → 2–3 paragraph clinical narrative. 10-minute cache. Template fallback if no API key.
 
@@ -49,23 +51,29 @@ All endpoints under `/api/v1` except `/health`.
 | GET | `/patients/{id}` | 200 / 404 | Computed `age` and `full_name` |
 | POST | `/patients` | 201 / 422 | Validates email, blood type, status, non-empty names |
 | PUT | `/patients/{id}` | 200 / 404 | Partial update — only sent fields change |
-| DELETE | `/patients/{id}` | 204 / 404 | Cascade deletes notes |
+| DELETE | `/patients/{id}` | 204 / 404 | Cascade deletes notes and labs |
 | GET | `/patients/{id}/notes` | 200 / 404 | Ordered newest-first |
 | POST | `/patients/{id}/notes` | 201 / 400 | Rejects empty/whitespace |
 | DELETE | `/patients/{id}/notes/{noteId}` | 204 / 404 | Validates note belongs to patient |
+| GET | `/patients/{id}/labs` | 200 / 404 | Ordered newest-first |
+| POST | `/patients/{id}/labs` | 201 / 404 | Validates test_name, status |
+| PUT | `/patients/{id}/labs/{labId}` | 200 / 404 | Partial update (status, result, notes) |
+| DELETE | `/patients/{id}/labs/{labId}` | 204 / 404 | Validates lab belongs to patient |
 | GET | `/patients/{id}/summary` | 200 / 503 | Gemini or template fallback |
 
 ## Testing
 
-33 pytest tests against in-memory SQLite — no PostgreSQL, no mocking.
+48 pytest tests against in-memory SQLite — no PostgreSQL, no mocking.
 
 ```bash
 docker compose exec backend pytest -v
 ```
 
-**Patients (21 tests):** Valid create with computed fields · missing fields (422) · invalid email (422) · invalid blood type `"Z+"` (422) · invalid status `"unknown"` (422) · whitespace-only names (422) · paginated list · search by name · empty search results · filter by status · sort asc/desc · pagination boundary (`page_size=2` with 3 records) · get by ID · 404 on missing · full update · partial update (phone changes, name untouched) · delete → 204 then GET → 404
+**Patients (23 tests):** Valid create with computed fields · missing fields (422) · invalid email (422) · invalid blood type `"Z+"` (422) · invalid status `"unknown"` (422) · whitespace-only names (422) · clinical fields (insurance, history, consent) · paginated list · search by name · empty search results · filter by status · sort asc/desc · pagination boundary (`page_size=2` with 3 records) · get by ID · 404 on missing · full update · partial update (phone changes, name untouched) · insurance update · delete → 204 then GET → 404
 
 **Notes (12 tests):** Add note · custom timestamp · empty content (400) · missing patient (404) · list notes · empty list · missing patient (404) · descending order · delete (204) · missing note (404) · wrong patient ID (404)
+
+**Labs (14 tests):** Order lab · empty test name (422) · invalid status (422) · missing patient (404) · with optional notes · list labs · empty list · missing patient (404) · update status · partial update · update with results · delete (204) · missing lab (404)
 
 ## Key Decisions
 
@@ -83,7 +91,7 @@ docker compose exec backend pytest -v
 Two chosen per the assessment instructions:
 
 1. **Alembic migrations** — Versioned schema, auto-runs on startup via `alembic upgrade head`
-2. **Unit tests** — 33 tests covering CRUD, validation edge cases, pagination, sorting, error responses
+2. **Unit tests** — 48 tests covering CRUD, validation edge cases, pagination, sorting, error responses
 
 ## Running Without Docker
 

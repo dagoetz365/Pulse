@@ -24,6 +24,18 @@ class PatientBase(BaseModel):
     status: str = "active"
     last_visit: Optional[date] = None
 
+    # Insurance
+    insurance_provider: Optional[str] = None
+    insurance_policy_number: Optional[str] = None
+    insurance_group_number: Optional[str] = None
+
+    # History
+    medical_history: Optional[str] = None
+    family_history: list[str] = []
+
+    # Consent
+    consent_forms: list[str] = []
+
     @field_validator("blood_type")
     @classmethod
     def validate_blood_type(cls, v: Optional[str]) -> Optional[str]:
@@ -65,6 +77,12 @@ class PatientUpdate(BaseModel):
     conditions: Optional[list[str]] = None
     status: Optional[str] = None
     last_visit: Optional[date] = None
+    insurance_provider: Optional[str] = None
+    insurance_policy_number: Optional[str] = None
+    insurance_group_number: Optional[str] = None
+    medical_history: Optional[str] = None
+    family_history: Optional[list[str]] = None
+    consent_forms: Optional[list[str]] = None
 
     @field_validator("blood_type")
     @classmethod

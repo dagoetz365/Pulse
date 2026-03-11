@@ -19,11 +19,12 @@ pytest --cov=app --cov-report=term-missing -v
 backend/tests/
 ├── conftest.py          # Shared fixtures (test DB, client, sample data)
 ├── test_health.py       # Health check endpoint (1 test)
-├── test_patients.py     # Patient CRUD endpoints (21 tests)
-└── test_notes.py        # Note CRUD endpoints (11 tests)
+├── test_patients.py     # Patient CRUD endpoints (23 tests)
+├── test_notes.py        # Note CRUD endpoints (11 tests)
+└── test_labs.py         # Lab CRUD endpoints (14 tests)
 ```
 
-33 tests run against an in-memory SQLite database — no PostgreSQL required, no mocking.
+48 tests run against an in-memory SQLite database — no PostgreSQL required, no mocking.
 
 ## Test Coverage
 
@@ -52,6 +53,8 @@ backend/tests/
 | `test_get_patient_not_found` | 404 |
 | `test_update_patient_full` | 200, all fields updated |
 | `test_update_patient_partial` | 200, phone changes, name untouched |
+| `test_update_patient_insurance` | 200, insurance field updated, others untouched |
+| `test_create_patient_with_clinical_fields` | 201, insurance/history/consent round-trip |
 | `test_delete_patient` | 204, then GET returns 404 |
 
 ### Note CRUD (`test_notes.py`)
@@ -69,6 +72,23 @@ backend/tests/
 | `test_delete_note_not_found` | 404 |
 | `test_delete_note_wrong_patient` | 404, validates note ownership |
 
+### Lab CRUD (`test_labs.py`)
+| Test | Expected |
+|------|----------|
+| `test_add_lab` | 201, returns lab with ID and status "ordered" |
+| `test_add_lab_empty_test_name` | 422, rejects empty/whitespace |
+| `test_add_lab_invalid_status` | 422, rejects invalid status |
+| `test_add_lab_missing_patient` | 404 |
+| `test_add_lab_with_notes` | 201, optional notes preserved |
+| `test_list_labs` | 200, list of labs |
+| `test_list_labs_empty` | 200, empty list |
+| `test_list_labs_missing_patient` | 404 |
+| `test_update_lab_status` | 200, status changed |
+| `test_update_lab_partial` | 200, only sent fields change |
+| `test_update_lab_with_result` | 200, result and result_date set |
+| `test_delete_lab` | 204 |
+| `test_delete_lab_not_found` | 404 |
+
 ## Fixtures (`conftest.py`)
 
 | Fixture | Scope | Description |
@@ -77,6 +97,7 @@ backend/tests/
 | `client` | function | FastAPI TestClient with overridden DB |
 | `sample_patient` | function | Pre-created patient |
 | `sample_note` | function | Pre-created note attached to sample patient |
+| `sample_lab` | function | Pre-created lab attached to sample patient |
 
 ## Test Philosophy
 

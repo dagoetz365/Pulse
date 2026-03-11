@@ -10,6 +10,7 @@ import random
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
 from app.database import SessionLocal
+from app.models.lab import Lab
 from app.models.note import Note
 from app.models.patient import Patient
 
@@ -21,6 +22,12 @@ PATIENTS = [
         "blood_type": "O+", "allergies": ["Penicillin"],
         "conditions": ["Hypertension", "Type 2 Diabetes"], "status": "active",
         "last_visit": date(2025, 2, 10),
+        "insurance_provider": "Blue Cross Blue Shield",
+        "insurance_policy_number": "BCB-2024-88341",
+        "insurance_group_number": "GRP-445",
+        "medical_history": "Diagnosed with Type 2 Diabetes in 2010. Hypertension since 2005. History of elevated cholesterol managed with statins.",
+        "family_history": ["Heart Disease (father)", "Type 2 Diabetes (mother)"],
+        "consent_forms": ["HIPAA Privacy Notice", "Treatment Consent", "Insurance Authorization"],
     },
     {
         "first_name": "Sarah", "last_name": "Chen",
@@ -29,6 +36,12 @@ PATIENTS = [
         "blood_type": "A+", "allergies": [],
         "conditions": ["Asthma"], "status": "active",
         "last_visit": date(2025, 1, 28),
+        "insurance_provider": "Aetna",
+        "insurance_policy_number": "AET-2025-11209",
+        "insurance_group_number": "GRP-112",
+        "medical_history": "Childhood asthma, well-controlled with inhaler. No hospitalizations.",
+        "family_history": ["Breast Cancer (mother)", "Asthma (brother)"],
+        "consent_forms": ["HIPAA Privacy Notice", "Treatment Consent"],
     },
     {
         "first_name": "Robert", "last_name": "Johnson",
@@ -37,6 +50,11 @@ PATIENTS = [
         "blood_type": "B-", "allergies": ["Sulfa", "Aspirin"],
         "conditions": ["COPD", "Heart Failure", "Atrial Fibrillation"], "status": "critical",
         "last_visit": date(2025, 3, 1),
+        "insurance_provider": "Medicare",
+        "insurance_policy_number": "MED-1942-55032",
+        "medical_history": "Longtime smoker (quit 2015). COPD diagnosed 2012. Heart failure since 2020. Multiple hospitalizations for exacerbations.",
+        "family_history": ["COPD (father)", "Lung Cancer (mother)", "Heart Disease (brother)"],
+        "consent_forms": ["HIPAA Privacy Notice", "Treatment Consent", "Advance Directive"],
     },
     {
         "first_name": "Maria", "last_name": "Garcia",
@@ -45,6 +63,12 @@ PATIENTS = [
         "blood_type": "AB+", "allergies": ["Latex"],
         "conditions": ["Rheumatoid Arthritis"], "status": "active",
         "last_visit": date(2025, 2, 20),
+        "insurance_provider": "UnitedHealthcare",
+        "insurance_policy_number": "UHC-2024-67823",
+        "insurance_group_number": "GRP-890",
+        "medical_history": "Rheumatoid arthritis diagnosed 2018. Managed with methotrexate. Previous knee replacement (left, 2022).",
+        "family_history": ["Rheumatoid Arthritis (grandmother)", "Hypertension (father)"],
+        "consent_forms": ["HIPAA Privacy Notice", "Treatment Consent"],
     },
     {
         "first_name": "David", "last_name": "Kim",
@@ -53,6 +77,10 @@ PATIENTS = [
         "blood_type": "O-", "allergies": [],
         "conditions": [], "status": "active",
         "last_visit": date(2025, 1, 15),
+        "insurance_provider": "Cigna",
+        "insurance_policy_number": "CIG-2025-40091",
+        "insurance_group_number": "GRP-201",
+        "consent_forms": ["HIPAA Privacy Notice"],
     },
     {
         "first_name": "Patricia", "last_name": "Williams",
@@ -179,6 +207,18 @@ NOTE_TEMPLATES = [
 ]
 
 
+LAB_TEMPLATES = [
+    {"test_name": "Complete Blood Count (CBC)", "result": "WBC: 7.2 K/uL, RBC: 4.8 M/uL, Hemoglobin: 14.2 g/dL, Hematocrit: 42%, Platelets: 250 K/uL"},
+    {"test_name": "Comprehensive Metabolic Panel", "result": "Glucose: 98 mg/dL, BUN: 15 mg/dL, Creatinine: 1.0 mg/dL, Sodium: 140 mEq/L, Potassium: 4.2 mEq/L"},
+    {"test_name": "Lipid Panel", "result": "Total Cholesterol: 195 mg/dL, LDL: 120 mg/dL, HDL: 55 mg/dL, Triglycerides: 150 mg/dL"},
+    {"test_name": "HbA1c", "result": "HbA1c: 6.8% (estimated average glucose: 148 mg/dL)"},
+    {"test_name": "Thyroid Panel (TSH, T3, T4)", "result": "TSH: 2.1 mIU/L, Free T4: 1.2 ng/dL, Free T3: 3.1 pg/mL — all within normal range"},
+    {"test_name": "Urinalysis", "result": "Color: Yellow, Clarity: Clear, pH: 6.0, Specific Gravity: 1.020, Protein: Negative, Glucose: Negative"},
+    {"test_name": "STD Panel", "result": "HIV: Non-reactive, Chlamydia: Negative, Gonorrhea: Negative, Syphilis: Non-reactive, Hepatitis B: Immune"},
+    {"test_name": "Basic Metabolic Panel", "result": "Glucose: 92 mg/dL, Calcium: 9.5 mg/dL, Sodium: 138 mEq/L, Potassium: 4.0 mEq/L, CO2: 24 mEq/L"},
+]
+
+
 def seed_if_empty():
     db = SessionLocal()
     try:
@@ -202,8 +242,23 @@ def seed_if_empty():
                 )
                 db.add(note)
 
+            # Seed 1-3 labs per patient
+            selected_labs = random.sample(LAB_TEMPLATES, k=random.randint(1, 3))
+            for lab_data in selected_labs:
+                days_ago = random.randint(5, 180)
+                status = random.choice(["ordered", "in_progress", "completed", "completed", "completed"])
+                lab = Lab(
+                    patient_id=patient.id,
+                    test_name=lab_data["test_name"],
+                    ordered_date=datetime.now(timezone.utc) - timedelta(days=days_ago),
+                    status=status,
+                    result=lab_data["result"] if status == "completed" else None,
+                    result_date=(datetime.now(timezone.utc) - timedelta(days=days_ago - 3)) if status == "completed" else None,
+                )
+                db.add(lab)
+
         db.commit()
-        print(f"✅ Seeded {len(PATIENTS)} patients with clinical notes.")
+        print(f"✅ Seeded {len(PATIENTS)} patients with clinical notes and labs.")
     except Exception as e:
         db.rollback()
         print(f"❌ Seed failed: {e}")

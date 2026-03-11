@@ -102,6 +102,28 @@ class TestCreatePatient:
         resp = client.post(f"{BASE_URL}/", json=payload)
         assert resp.status_code == 422
 
+    def test_create_patient_with_clinical_fields(self, client: TestClient):
+        """Creating a patient with insurance, history, and consent fields."""
+        payload = {
+            "first_name": "Test",
+            "last_name": "Clinical",
+            "date_of_birth": "1985-01-01",
+            "email": "clinical@example.com",
+            "insurance_provider": "Aetna",
+            "insurance_policy_number": "AET-999",
+            "medical_history": "History of migraines.",
+            "family_history": ["Heart Disease"],
+            "consent_forms": ["HIPAA Privacy Notice", "Treatment Consent"],
+        }
+        resp = client.post(f"{BASE_URL}/", json=payload)
+        assert resp.status_code == 201
+        body = resp.json()
+        assert body["insurance_provider"] == "Aetna"
+        assert body["insurance_policy_number"] == "AET-999"
+        assert body["medical_history"] == "History of migraines."
+        assert body["family_history"] == ["Heart Disease"]
+        assert body["consent_forms"] == ["HIPAA Privacy Notice", "Treatment Consent"]
+
 
 # ---------------------------------------------------------------------------
 # GET /api/v1/patients — list
@@ -274,6 +296,16 @@ class TestUpdatePatient:
         body = resp.json()
         assert body["phone"] == "555-9999"
         assert body["first_name"] == sample_patient["first_name"]
+
+    def test_update_patient_insurance(self, client: TestClient, sample_patient: dict):
+        """Updating insurance fields leaves other fields unchanged."""
+        patient_id = sample_patient["id"]
+        resp = client.put(
+            f"{BASE_URL}/{patient_id}", json={"insurance_provider": "Cigna"}
+        )
+        assert resp.status_code == 200
+        assert resp.json()["insurance_provider"] == "Cigna"
+        assert resp.json()["first_name"] == sample_patient["first_name"]
 
     def test_update_patient_not_found(self, client: TestClient):
         """Updating a non-existent patient returns 404."""
