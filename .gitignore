@@ -44,3 +44,6 @@ Thumbs.db
 # Logs
 *.log
 logs/
+
+# Interview prep (local only)
+INTERVIEW_PREP.md
