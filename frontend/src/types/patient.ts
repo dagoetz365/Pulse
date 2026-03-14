@@ -1,3 +1,16 @@
+/**
+ * TypeScript interfaces for patient data.
+ *
+ * These types mirror the backend Pydantic schemas and are used throughout
+ * the frontend for type-safe patient operations:
+ * - {@link Patient} — Full patient record as returned by the API (includes
+ *   computed `age` and `full_name` fields).
+ * - {@link PatientCreate} — Payload for creating a new patient (required +
+ *   optional fields).
+ * - {@link PatientUpdate} — Partial payload for updating an existing patient.
+ * - {@link PaginatedResponse} — Generic wrapper for paginated list endpoints.
+ */
+
 export type PatientStatus = "active" | "inactive" | "critical";
 export type BloodType = "A+" | "A-" | "B+" | "B-" | "O+" | "O-" | "AB+" | "AB-";
 

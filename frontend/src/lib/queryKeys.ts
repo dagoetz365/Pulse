@@ -1,3 +1,11 @@
+/**
+ * TanStack Query key factory.
+ *
+ * Centralises all cache keys used by TanStack Query (React Query) so that
+ * mutations can precisely invalidate related queries after data changes.
+ * Each domain (patients, notes, labs, summary) exposes typed key builders
+ * that produce `readonly` tuple keys for cache identity.
+ */
 export const queryKeys = {
   patients: {
     all: ["patients"] as const,

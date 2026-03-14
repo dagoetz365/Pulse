@@ -1,3 +1,18 @@
+"""
+SQLAlchemy ORM model for the ``patients`` table.
+
+The Patient model is the central entity in the system and contains:
+- **Personal info**: name, date of birth, email (unique), phone, address
+- **Medical data**: blood type, allergies, conditions, status, last visit
+- **Insurance**: provider, policy number, group number
+- **History**: free-text medical history, family history list
+- **Consent**: list of signed consent form identifiers
+
+Relationships:
+    notes: One-to-many with :class:`Note` (cascade delete, ordered by timestamp desc)
+    labs: One-to-many with :class:`Lab` (cascade delete, ordered by ordered_date desc)
+"""
+
 import uuid
 from datetime import datetime
 

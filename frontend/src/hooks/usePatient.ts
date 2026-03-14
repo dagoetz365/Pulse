@@ -1,3 +1,10 @@
+/**
+ * TanStack Query hook for fetching a single patient by UUID.
+ *
+ * The query is disabled when `id` is falsy, preventing unnecessary
+ * API calls before a patient ID is available (e.g. during route transitions).
+ */
+
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { queryKeys } from "@/lib/queryKeys";

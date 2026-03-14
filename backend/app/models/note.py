@@ -1,3 +1,14 @@
+"""
+SQLAlchemy ORM model for the ``notes`` table.
+
+Clinical notes are free-text entries attached to a patient, used by
+clinicians to document visits, observations, and care plans.
+
+Each note belongs to exactly one patient via ``patient_id`` and is
+automatically deleted when the parent patient is removed (CASCADE).
+Notes are ordered by ``timestamp`` descending in the patient relationship.
+"""
+
 import uuid
 
 from sqlalchemy import Column, DateTime, ForeignKey, Text, func

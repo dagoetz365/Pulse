@@ -1,3 +1,17 @@
+/**
+ * Dashboard page — the landing view of the application.
+ *
+ * Displays an at-a-glance overview of the patient population:
+ * - **Stat cards**: Total, active, critical, and inactive patient counts.
+ *   Each card is clickable and navigates to the patients list pre-filtered.
+ * - **Status distribution chart**: Interactive Recharts donut chart.
+ * - **Critical patients list**: Up to 5 critical patients with conditions.
+ * - **Recent patients list**: The most recent 8 patients from the full list.
+ *
+ * Data is fetched via `usePatients` with different filter params for each
+ * section, leveraging TanStack Query's deduplication and caching.
+ */
+
 import { useNavigate } from "react-router-dom";
 import { Users, UserCheck, AlertTriangle, UserX, Plus, Activity } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

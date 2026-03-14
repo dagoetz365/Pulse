@@ -1,3 +1,12 @@
+/**
+ * Zustand store for user preferences, persisted to localStorage.
+ *
+ * Stores display name, notification toggles (email, SMS, push, critical
+ * alerts), and UI preferences (compact mode). Changes are automatically
+ * saved to `localStorage` under the key `"pulse-settings"` via the
+ * Zustand `persist` middleware and survive page reloads.
+ */
+
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 

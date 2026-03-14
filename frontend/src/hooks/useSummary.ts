@@ -1,3 +1,13 @@
+/**
+ * TanStack Query hook for fetching an AI-generated clinical summary.
+ *
+ * The query is **disabled by default** (`enabled: false`) so it only fires
+ * when the user explicitly clicks "Generate Summary" (via `refetch()`).
+ * Results are cached for 10 minutes to avoid redundant API calls.
+ * Retries are disabled since summary generation failures are typically
+ * non-transient (e.g. missing API key).
+ */
+
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { queryKeys } from "@/lib/queryKeys";

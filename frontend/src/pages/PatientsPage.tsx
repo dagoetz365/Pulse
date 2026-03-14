@@ -1,3 +1,12 @@
+/**
+ * Patients list page with search, filtering, sorting, and pagination.
+ *
+ * Reads filter state from the `usePatientStore` Zustand store and passes
+ * it to `usePatients` for server-side filtering. Renders a `PatientTable`
+ * with sortable columns and a `Pagination` component. Shows an `EmptyState`
+ * when no patients match the current filters.
+ */
+
 import { useNavigate } from "react-router-dom";
 import { Plus, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";

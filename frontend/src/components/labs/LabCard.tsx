@@ -1,3 +1,11 @@
+/**
+ * Individual lab result card with status badge, results, and actions.
+ *
+ * Displays test name, color-coded status badge (ordered/in progress/completed),
+ * ordered and result dates, result text, and optional notes. Hover reveals
+ * action buttons: update (if not completed) and delete with confirmation.
+ */
+
 import { useState } from "react";
 import { Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";

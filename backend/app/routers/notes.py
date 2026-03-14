@@ -1,3 +1,17 @@
+"""
+Clinical notes and AI summary API router.
+
+Mounted at ``/api/v1/patients``. Provides endpoints for:
+- ``GET    /{patient_id}/notes``           — List all notes for a patient
+- ``POST   /{patient_id}/notes``           — Add a new clinical note
+- ``DELETE  /{patient_id}/notes/{note_id}``— Delete a specific note
+- ``GET    /{patient_id}/summary``         — Generate an AI-powered clinical
+  summary using Google Gemini (falls back to a template if unavailable)
+
+The summary endpoint returns a ``SummaryResponse`` containing the generated
+text, patient ID, and a UTC timestamp of when the summary was produced.
+"""
+
 import logging
 from datetime import datetime, timezone
 from uuid import UUID
@@ -16,6 +30,8 @@ logger = logging.getLogger(__name__)
 
 
 class SummaryResponse(BaseModel):
+    """Response model for AI-generated clinical summaries."""
+
     summary: str
     patient_id: str
     generated_at: str

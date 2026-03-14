@@ -1,3 +1,16 @@
+"""
+Lab results CRUD API router.
+
+Mounted at ``/api/v1/patients``. Provides endpoints for:
+- ``GET    /{patient_id}/labs``          — List all lab results for a patient
+- ``POST   /{patient_id}/labs``          — Order a new lab test
+- ``PUT    /{patient_id}/labs/{lab_id}`` — Update lab status/results
+- ``DELETE /{patient_id}/labs/{lab_id}`` — Delete a lab result
+
+All endpoints verify the parent patient exists before operating on labs.
+Business logic is delegated to :class:`LabService`.
+"""
+
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, status

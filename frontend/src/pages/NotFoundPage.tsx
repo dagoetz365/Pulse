@@ -1,3 +1,10 @@
+/**
+ * 404 Not Found page.
+ *
+ * Displayed for any route that doesn't match a defined path.
+ * Shows a large "404" heading with a "Back to Dashboard" button.
+ */
+
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 

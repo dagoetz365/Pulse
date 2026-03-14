@@ -1,3 +1,11 @@
+/**
+ * New patient creation page.
+ *
+ * Renders the shared `PatientForm` component with no default values.
+ * On submission, calls `useCreatePatient` which POSTs to the API,
+ * shows a success toast, and navigates to the new patient's detail page.
+ */
+
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";

@@ -1,3 +1,16 @@
+/**
+ * Settings page for managing user preferences.
+ *
+ * Organised into three sections:
+ * - **Profile**: Displays the current user's name, email, and role.
+ * - **Notifications**: Toggle switches for email, SMS, push, and critical
+ *   patient alert notifications.
+ * - **Appearance**: Compact mode toggle for denser information display.
+ *
+ * All settings are read from and written to the `useSettingsStore` Zustand
+ * store, which persists to `localStorage`.
+ */
+
 import type { ReactNode } from "react";
 import {
   User,

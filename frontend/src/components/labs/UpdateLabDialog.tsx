@@ -1,3 +1,12 @@
+/**
+ * Dialog for updating lab status and entering results.
+ *
+ * Presents a form with fields for status (dropdown), result text, result
+ * date, and additional notes. Pre-fills with the current lab values.
+ * Used to transition labs through the status lifecycle
+ * (ordered -> in_progress -> completed) and record results.
+ */
+
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";

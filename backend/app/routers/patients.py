@@ -1,3 +1,16 @@
+"""
+Patient CRUD API router.
+
+Mounted at ``/api/v1/patients``. Provides endpoints for:
+- ``GET  /``             — List patients with pagination, search, sort, and status filter
+- ``GET  /{patient_id}`` — Retrieve a single patient by UUID
+- ``POST /``             — Create a new patient record
+- ``PUT  /{patient_id}`` — Update an existing patient (partial update)
+- ``DELETE /{patient_id}``— Delete a patient and cascade-remove their notes and labs
+
+All endpoints delegate business logic to :class:`PatientService`.
+"""
+
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, status

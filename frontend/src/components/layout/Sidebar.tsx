@@ -1,3 +1,12 @@
+/**
+ * Navigation sidebar component.
+ *
+ * Renders the Pulse Healthcare logo and navigation links (Dashboard,
+ * Patients, Settings). Responsive: on mobile it slides in/out as an
+ * overlay controlled by `useUIStore.sidebarOpen`; on desktop (lg+)
+ * it is always visible as a static column.
+ */
+
 import { NavLink } from "react-router-dom";
 import { Activity, LayoutDashboard, Settings, Users, X } from "lucide-react";
 import { cn } from "@/lib/utils";

@@ -1,3 +1,13 @@
+/**
+ * Interactive donut chart showing patient status distribution.
+ *
+ * Built with Recharts. Renders active (green), critical (red), and
+ * inactive (amber) segments with a hollow center. Segments with zero
+ * patients are excluded. A legend beside the chart shows counts and
+ * percentages. Both chart segments and legend items are clickable,
+ * triggering `onSegmentClick` to navigate to the filtered patient list.
+ */
+
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 
 interface StatusChartProps {

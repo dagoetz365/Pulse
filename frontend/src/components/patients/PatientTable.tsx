@@ -1,3 +1,12 @@
+/**
+ * Patient data table with sortable columns and inline actions.
+ *
+ * Renders patients in a table with columns: Name (+ email), Age, Last Visit,
+ * Status (badge), and Actions (view, edit, delete). Sortable columns update
+ * the `usePatientStore` sort state on click. Clicking a row navigates to the
+ * patient's detail page. Shows skeleton rows while loading.
+ */
+
 import { useNavigate } from "react-router-dom";
 import { ArrowUpDown, ArrowUp, ArrowDown, Eye, Pencil } from "lucide-react";
 import {

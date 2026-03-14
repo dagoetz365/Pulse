@@ -1,3 +1,13 @@
+/**
+ * TanStack Query mutation hooks for lab result create, update, and delete.
+ *
+ * - `useAddLab(patientId)` — Orders a new lab test.
+ * - `useUpdateLab(patientId)` — Updates lab status/results (e.g. marking completed).
+ * - `useDeleteLab(patientId)` — Deletes a lab result.
+ *
+ * All hooks invalidate the labs list cache on success and show toast notifications.
+ */
+
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { queryKeys } from "@/lib/queryKeys";

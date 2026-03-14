@@ -1,3 +1,15 @@
+"""
+Pulse Healthcare API — FastAPI application entry point.
+
+Sets up the FastAPI app with:
+- CORS middleware configured from environment settings
+- HTTP request logging middleware (method, path, status, duration)
+- Versioned API routers for patients, notes, labs, and health check
+- Async lifespan context manager for startup/shutdown events
+
+All patient-related endpoints are mounted under the ``/api/v1/patients`` prefix.
+"""
+
 import logging
 import time
 from contextlib import asynccontextmanager
@@ -14,6 +26,7 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(mess
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    """Async lifespan handler for application startup and shutdown events."""
     yield
 
 

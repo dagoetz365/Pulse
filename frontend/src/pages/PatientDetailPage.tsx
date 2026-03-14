@@ -1,3 +1,21 @@
+/**
+ * Patient detail page — two-panel layout showing all patient data.
+ *
+ * **Left column** (1/3 width on desktop):
+ * - Contact information (email, phone, address, DOB, last visit)
+ * - Insurance details (conditionally rendered if present)
+ * - Medical information (blood type, allergies, conditions, history)
+ * - Consent forms (conditionally rendered if present)
+ * - AI-powered clinical summary panel (on-demand generation)
+ *
+ * **Right column** (2/3 width):
+ * - Clinical notes list with add/delete
+ * - Lab results list with add/update/delete
+ *
+ * The top bar shows the patient's avatar initials, name, age, status badge,
+ * and action buttons (Email, Edit, Delete).
+ */
+
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, Pencil, Phone, Mail, MapPin, Droplets, Calendar, Shield, Heart, FileCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";

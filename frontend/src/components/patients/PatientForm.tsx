@@ -1,3 +1,19 @@
+/**
+ * Reusable patient create/edit form with Zod validation.
+ *
+ * Sections: Personal Information, Medical Information, Insurance, and
+ * History & Consent. Uses React Hook Form with a Zod schema that mirrors
+ * the backend validation rules. Array fields (allergies, conditions,
+ * family history, consent forms) use a custom `TagInput` component
+ * that allows adding/removing items via Enter key or button click.
+ *
+ * Props:
+ * - `defaultValues` — Pre-fills the form for editing an existing patient.
+ * - `onSubmit` — Callback with validated `PatientCreate` data.
+ * - `isSubmitting` — Disables the submit button during API calls.
+ * - `submitLabel` — Customise the submit button text.
+ */
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";

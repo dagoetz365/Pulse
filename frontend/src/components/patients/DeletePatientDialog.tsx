@@ -1,3 +1,12 @@
+/**
+ * Confirmation dialog for deleting a patient.
+ *
+ * Warns the user that deletion will also remove all associated notes and
+ * labs and cannot be undone. Accepts an optional custom `trigger` element;
+ * defaults to a trash icon button. Uses `useDeletePatient` mutation which
+ * navigates to the patients list on success.
+ */
+
 import { useState } from "react";
 import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";

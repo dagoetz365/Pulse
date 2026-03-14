@@ -1,3 +1,10 @@
+/**
+ * Individual clinical note card with a timeline-style dot indicator.
+ *
+ * Displays the note's timestamp and content. A delete button (trash icon)
+ * appears on hover via the parent group class.
+ */
+
 import { formatDateTime } from "@/lib/utils";
 import { DeleteNoteButton } from "./DeleteNoteButton";
 import type { Note } from "@/types/note";

@@ -1,3 +1,11 @@
+/**
+ * Application entry point.
+ *
+ * Mounts the root React component into the DOM element with id "root".
+ * Loads Inter (body text) and Playfair Display (headings) font weights
+ * and the global CSS stylesheet before rendering.
+ */
+
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "@fontsource/inter/400.css";

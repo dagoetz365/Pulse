@@ -1,3 +1,10 @@
+/**
+ * TanStack Query hook for fetching all lab results for a patient.
+ *
+ * Returns labs ordered by `ordered_date` descending (newest first).
+ * Disabled when `patientId` is falsy.
+ */
+
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { queryKeys } from "@/lib/queryKeys";

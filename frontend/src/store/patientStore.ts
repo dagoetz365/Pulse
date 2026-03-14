@@ -1,3 +1,13 @@
+/**
+ * Zustand store for patient list filter state.
+ *
+ * Manages search text, status filter, sort field/order, and current page.
+ * Changing search or status resets the page to 1 to avoid showing an
+ * empty page after filtering narrows the result set.
+ *
+ * This store is intentionally **not** persisted — filters reset on page reload.
+ */
+
 import { create } from "zustand";
 
 interface PatientFilters {

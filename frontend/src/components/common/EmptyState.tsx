@@ -1,3 +1,11 @@
+/**
+ * Empty state placeholder UI.
+ *
+ * Displayed when a list has no items (e.g. no patients, no notes, no labs).
+ * Shows an optional icon in a circular badge, a title, description, and
+ * an optional action element (e.g. a button to add the first item).
+ */
+
 import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 

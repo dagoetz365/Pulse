@@ -1,3 +1,11 @@
+/**
+ * Form for adding a new clinical note to a patient.
+ *
+ * Features a content textarea and an optional custom timestamp field
+ * (toggled via a "Set custom timestamp" link). On submission, calls
+ * `useAddNote` and resets the form on success.
+ */
+
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";

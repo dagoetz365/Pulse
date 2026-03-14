@@ -1,3 +1,12 @@
+/**
+ * Color-coded status badge for patient status display.
+ *
+ * Renders a pill-shaped badge with a small dot indicator:
+ * - **Active**: Green (emerald) background and text
+ * - **Inactive**: Amber/yellow background and text
+ * - **Critical**: Red background and text
+ */
+
 import { cn } from "@/lib/utils";
 import type { PatientStatus } from "@/types/patient";
 

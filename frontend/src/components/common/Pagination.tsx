@@ -1,3 +1,11 @@
+/**
+ * Pagination controls with previous/next buttons and page numbers.
+ *
+ * Displays "Showing X-Y of Z patients" on the left and page navigation
+ * on the right. Shows up to 5 page number buttons with a sliding window
+ * that keeps the current page centered. Hidden when there is only one page.
+ */
+
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 

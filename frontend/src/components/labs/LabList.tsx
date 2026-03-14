@@ -1,3 +1,11 @@
+/**
+ * Lab results list for a patient.
+ *
+ * Renders the `AddLabForm` at the top followed by a list of `LabCard`
+ * components. Shows skeleton loaders while fetching and an `EmptyState`
+ * when the patient has no lab orders.
+ */
+
 import { FlaskConical } from "lucide-react";
 import { LabCard } from "./LabCard";
 import { AddLabForm } from "./AddLabForm";

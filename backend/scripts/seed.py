@@ -1,6 +1,12 @@
 """
-Seed script — called automatically from start.sh on container startup.
-Only seeds if the patients table is empty (idempotent).
+Idempotent database seed script.
+
+Called automatically from ``start.sh`` on container startup. Creates 18
+realistic sample patients, each with 2-5 randomised clinical notes and
+1-3 lab results at various statuses (ordered, in_progress, completed).
+
+The script is safe to run repeatedly — it checks whether the patients
+table already has data and exits early if so.
 """
 import os
 import sys
