@@ -1,17 +1,3 @@
-/**
- * Root application component.
- *
- * Sets up the global provider hierarchy:
- * 1. **QueryClientProvider** — TanStack Query with 30s stale time and 1 retry.
- * 2. **ErrorBoundary** — Catches unhandled React errors app-wide.
- * 3. **BrowserRouter** — Client-side routing via React Router.
- * 4. **AppShell** — Layout wrapper (sidebar + header) that wraps all routes.
- *
- * All page components are **lazy-loaded** with `React.lazy()` for automatic
- * code splitting, showing a skeleton `PageLoader` during chunk downloads.
- * A global `<Toaster />` renders toast notifications outside the route tree.
- */
-
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";

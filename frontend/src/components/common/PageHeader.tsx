@@ -1,10 +1,3 @@
-/**
- * Reusable page header with title, optional subtitle, and action buttons.
- *
- * Renders a flex layout with the title/subtitle on the left and optional
- * action elements (e.g. "New Patient" button) on the right.
- */
-
 import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 

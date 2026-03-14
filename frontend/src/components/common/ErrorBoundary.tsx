@@ -1,11 +1,3 @@
-/**
- * React error boundary for graceful error handling.
- *
- * Wraps the entire application to catch unhandled JavaScript errors in
- * the component tree. Displays a centered error message with a "Try again"
- * button that resets the error state. Errors are also logged to the console.
- */
-
 import { Component, ErrorInfo, ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 

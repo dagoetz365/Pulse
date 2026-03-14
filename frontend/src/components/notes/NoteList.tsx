@@ -1,11 +1,3 @@
-/**
- * Clinical notes list for a patient.
- *
- * Renders the `AddNoteForm` at the top followed by a chronological list
- * of `NoteCard` components. Shows skeleton loaders while fetching and an
- * `EmptyState` when the patient has no notes.
- */
-
 import { FileText } from "lucide-react";
 import { NoteCard } from "./NoteCard";
 import { AddNoteForm } from "./AddNoteForm";

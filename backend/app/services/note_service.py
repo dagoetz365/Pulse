@@ -1,12 +1,3 @@
-"""
-Business logic layer for clinical note operations.
-
-The ``NoteService`` handles creating, listing, and deleting clinical notes
-for a given patient. Notes are always scoped to a specific patient_id to
-prevent cross-patient access. Listing returns notes in reverse
-chronological order (newest first).
-"""
-
 from datetime import datetime, timezone
 from uuid import UUID
 

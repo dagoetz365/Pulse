@@ -1,22 +1,3 @@
-"""
-Pydantic schemas for patient request/response validation.
-
-Defines three schema tiers:
-- **PatientBase**: Shared fields and validators for create and output schemas.
-  Validates blood type against the allowed set, status against
-  ``active/inactive/critical``, and enforces name length constraints.
-- **PatientCreate**: Inherits PatientBase unchanged; used for POST bodies.
-- **PatientUpdate**: All fields optional for PATCH partial updates.
-- **PatientOut**: Response schema that adds ``id``, timestamps, and computed
-  ``age`` and ``full_name`` properties derived from stored fields.
-
-Constants:
-    BLOOD_TYPES: Valid blood type strings (e.g. "A+", "O-").
-    STATUSES: Valid patient statuses.
-    SORTABLE_FIELDS: Whitelist of column names allowed in sort queries
-    (prevents SQL injection through sort parameters).
-"""
-
 from datetime import date, datetime
 from typing import Optional
 from uuid import UUID

@@ -1,12 +1,3 @@
-/**
- * TanStack Query mutation hooks for clinical note create and delete.
- *
- * - `useAddNote(patientId)` — Creates a new note and invalidates the notes list cache.
- * - `useDeleteNote(patientId)` — Deletes a note by ID and invalidates the notes list cache.
- *
- * Both hooks show toast notifications on success and error.
- */
-
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { queryKeys } from "@/lib/queryKeys";

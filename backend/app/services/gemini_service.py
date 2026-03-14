@@ -1,20 +1,3 @@
-"""
-AI-powered clinical summary generation using Google Gemini.
-
-The ``GeminiService`` produces narrative patient summaries by sending
-patient demographics and chronological clinical notes to the Gemini 2.5
-Flash model with a medical documentation prompt.
-
-Fallback behavior:
-    - If ``GEMINI_API_KEY`` is not configured, a structured template
-      summary is returned instead of calling the API.
-    - If the Gemini API call fails at runtime, the service logs a warning
-      and falls back to the same template summary.
-
-The template summary includes patient identifiers, conditions, allergies,
-note count, and the most recent note content.
-"""
-
 import logging
 from typing import TYPE_CHECKING
 

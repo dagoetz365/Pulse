@@ -1,11 +1,3 @@
-/**
- * TanStack Query hook for fetching a paginated, searchable, sortable patient list.
- *
- * Accepts filter parameters (page, search, sort, status) and returns a
- * `PaginatedResponse<Patient>`. Uses `placeholderData` to keep the previous
- * page visible while the next page loads, preventing layout flicker.
- */
-
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { queryKeys } from "@/lib/queryKeys";

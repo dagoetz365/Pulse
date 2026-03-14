@@ -1,19 +1,3 @@
-"""
-Pydantic schemas for lab result request/response validation.
-
-Schemas:
-- **LabCreate**: POST body for ordering a new lab test. Validates that
-  ``test_name`` is non-empty and ``status`` is one of the allowed values.
-  Defaults status to ``"ordered"`` if not provided.
-- **LabUpdate**: PATCH body for updating an existing lab. All fields
-  optional for partial updates (e.g. setting result and status to completed).
-- **LabOut**: Response schema with all lab fields including auto-generated
-  ``id``, ``patient_id``, and ``created_at``.
-
-Constants:
-    LAB_STATUSES: Valid status values — ``ordered``, ``in_progress``, ``completed``.
-"""
-
 from datetime import datetime
 from typing import Optional
 from uuid import UUID

@@ -1,12 +1,3 @@
-"""
-Business logic layer for lab result operations.
-
-The ``LabService`` manages the lifecycle of lab tests: ordering new tests,
-listing results, updating status/results, and deleting records. All
-operations are scoped to a specific patient_id. Labs are listed in reverse
-chronological order by ordered date.
-"""
-
 from datetime import datetime, timezone
 from uuid import UUID
 

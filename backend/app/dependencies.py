@@ -1,16 +1,3 @@
-"""
-FastAPI dependency injection helpers.
-
-Provides reusable dependencies that are injected into route handlers via
-``Depends()``:
-
-- **get_db**: Yields a SQLAlchemy session and ensures it is closed after the
-  request completes, even if an exception occurs.
-- **PaginationParams**: Parses and validates common query parameters for
-  paginated list endpoints (page, page_size, search, sort_by, sort_order,
-  status filter).
-"""
-
 from typing import Generator
 
 from fastapi import Query
@@ -20,7 +7,6 @@ from app.database import SessionLocal
 
 
 def get_db() -> Generator:
-    """Yield a database session and close it when the request finishes."""
     db = SessionLocal()
     try:
         yield db

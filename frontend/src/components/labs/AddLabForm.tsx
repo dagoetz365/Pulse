@@ -1,11 +1,3 @@
-/**
- * Inline form for ordering a new lab test.
- *
- * A single text input for the test name with a "Order" submit button.
- * On submission, calls `useAddLab` which creates the lab with default
- * "ordered" status and resets the form.
- */
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";

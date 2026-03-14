@@ -1,10 +1,3 @@
-/**
- * TanStack Query hook for fetching all clinical notes for a patient.
- *
- * Returns notes in reverse chronological order (newest first).
- * Disabled when `patientId` is falsy.
- */
-
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { queryKeys } from "@/lib/queryKeys";

@@ -1,14 +1,3 @@
-/**
- * TanStack Query mutation hooks for patient create, update, and delete.
- *
- * Each hook handles:
- * - Calling the appropriate API endpoint
- * - Invalidating related query caches so lists and detail views refresh
- * - Showing success/error toast notifications
- * - Navigating to the appropriate page after success (detail page for
- *   create/update, patient list for delete)
- */
-
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { api } from "@/lib/api";

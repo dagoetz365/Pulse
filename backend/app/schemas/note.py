@@ -1,13 +1,3 @@
-"""
-Pydantic schemas for clinical note request/response validation.
-
-Schemas:
-- **NoteCreate**: POST body for adding a new note. The ``timestamp`` field
-  is optional and defaults to the current server time if omitted.
-- **NoteOut**: Response schema that includes the auto-generated ``id``,
-  ``patient_id``, ``content``, ``timestamp``, and ``created_at``.
-"""
-
 from datetime import datetime
 from typing import Optional
 from uuid import UUID

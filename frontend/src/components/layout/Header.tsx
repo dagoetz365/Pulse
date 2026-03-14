@@ -1,10 +1,3 @@
-/**
- * Top header bar component.
- *
- * Shows a hamburger menu button on mobile (toggles the sidebar) and an
- * optional page title. Renders as a slim 56px-tall bar with a bottom border.
- */
-
 import { Menu } from "lucide-react";
 import { useUIStore } from "@/store/uiStore";
 

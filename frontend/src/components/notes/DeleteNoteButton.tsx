@@ -1,10 +1,3 @@
-/**
- * Delete button with confirmation dialog for removing a clinical note.
- *
- * Renders as a small trash icon that appears on hover (via parent group).
- * Clicking opens a confirmation dialog before calling `useDeleteNote`.
- */
-
 import { useState } from "react";
 import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";

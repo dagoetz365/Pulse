@@ -1,11 +1,4 @@
-"""
-Tests for the /api/v1/patients/{id}/labs endpoints.
-
-Covers lab CRUD operations including creation with default and explicit
-statuses, validation of test name and status, listing, partial updates
-(e.g. marking a lab completed with results), and deletion. Also tests
-404 responses for non-existent patients and labs.
-"""
+"""Tests for the /api/v1/patients/{id}/labs endpoints."""
 
 import uuid
 
@@ -13,7 +6,6 @@ from fastapi.testclient import TestClient
 
 
 def _labs_url(patient_id: str) -> str:
-    """Build the labs endpoint URL for a given patient ID."""
     return f"/api/v1/patients/{patient_id}/labs"
 
 

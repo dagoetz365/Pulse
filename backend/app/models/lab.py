@@ -1,14 +1,3 @@
-"""
-SQLAlchemy ORM model for the ``labs`` table.
-
-Lab results track ordered medical tests for a patient through a
-status lifecycle: ``ordered`` → ``in_progress`` → ``completed``.
-
-Fields include the test name, ordered date, current status, optional
-result text, result date, and free-text notes. Each lab belongs to
-one patient and is cascade-deleted when the patient is removed.
-"""
-
 import uuid
 
 from sqlalchemy import Column, DateTime, ForeignKey, String, Text, func

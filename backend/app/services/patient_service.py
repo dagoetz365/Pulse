@@ -1,18 +1,3 @@
-"""
-Business logic layer for patient operations.
-
-The ``PatientService`` encapsulates all patient-related database operations,
-keeping the router layer thin. Features include:
-
-- **list_patients**: Paginated listing with case-insensitive search across
-  first name, last name, and email. Supports sorting by any whitelisted
-  column and optional status filtering.
-- **get_patient**: Single patient lookup by UUID.
-- **create_patient**: Inserts a new patient from validated schema data.
-- **update_patient**: Partial update using only fields that were explicitly set.
-- **delete_patient**: Removes a patient (notes and labs cascade-delete).
-"""
-
 import math
 from uuid import UUID
 

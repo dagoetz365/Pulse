@@ -1,10 +1,3 @@
-/**
- * Zustand store for transient UI state.
- *
- * Currently tracks whether the navigation sidebar is open or collapsed.
- * Not persisted — resets to open on page reload.
- */
-
 import { create } from "zustand";
 
 interface UIState {

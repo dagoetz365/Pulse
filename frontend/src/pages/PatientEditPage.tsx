@@ -1,14 +1,3 @@
-/**
- * Patient edit page.
- *
- * Fetches the existing patient via `usePatient` and pre-fills the shared
- * `PatientForm` component with current values. On submission, calls
- * `useUpdatePatient` which PUTs to the API, shows a success toast,
- * and navigates back to the patient's detail page.
- *
- * Shows a skeleton loader while the patient data is being fetched.
- */
-
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";

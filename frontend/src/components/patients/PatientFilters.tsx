@@ -1,12 +1,3 @@
-/**
- * Patient list filter controls — search bar and status dropdown.
- *
- * The search input is debounced (350ms) to avoid firing an API request
- * on every keystroke. The status dropdown filters by active, inactive,
- * critical, or all. Both controls update the `usePatientStore` which
- * drives the `usePatients` query parameters.
- */
-
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {

@@ -1,17 +1,3 @@
-/**
- * On-demand AI clinical summary panel.
- *
- * Displays a "Generate" button that triggers `useSummary.refetch()` to
- * call the backend's Gemini-powered summary endpoint. Shows four states:
- * 1. **Idle**: Prompt text explaining the feature.
- * 2. **Loading**: Skeleton lines while the summary is being generated.
- * 3. **Success**: The summary text in a highlighted card with generation timestamp.
- * 4. **Error**: Error message with a destructive-styled alert box.
- *
- * Summaries are cached for 10 minutes. The button text changes to
- * "Regenerate" once a summary exists.
- */
-
 import { Sparkles, RefreshCw, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
