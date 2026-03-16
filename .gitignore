@@ -47,3 +47,6 @@ logs/
 
 # Interview prep (local only)
 INTERVIEW_PREP.md
+
+# Claude Code
+.claude/
